@@ -87,12 +87,12 @@
 
         .section-label {
             font-family: var(--font-en);
-            font-size: 12px;
+            font-size: clamp(28px, 4vw, 40px);
             font-weight: 700;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--green-primary);
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             display: block;
         }
 
@@ -564,16 +564,12 @@
 
         /* ===== Problem Section ===== */
         .problem {
-            padding: 140px 0;
+            padding: 80px 0;
             position: relative;
         }
 
         .problem-header {
-            text-align: center;
             margin-bottom: 64px;
-        }
-        .problem-header .section-desc {
-            margin: 0 auto;
         }
 
         .problem-grid {
@@ -672,13 +668,14 @@
         }
 
         .partners-label {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
+            font-family: var(--font-en);
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--text-muted);
+            color: var(--green-primary);
             margin-bottom: 40px;
+            display: block;
         }
 
         .partners-track-wrapper {
@@ -736,16 +733,12 @@
 
         /* ===== Features Section ===== */
         .features {
-            padding: 140px 0;
+            padding: 80px 0;
             position: relative;
         }
 
         .features-header {
-            text-align: center;
             margin-bottom: 80px;
-        }
-        .features-header .section-desc {
-            margin: 0 auto;
         }
 
         .features-grid {
@@ -805,16 +798,12 @@
 
         /* ===== Team Section ===== */
         .team {
-            padding: 140px 0;
+            padding: 80px 0;
             border-top: 1px solid var(--dark-border);
         }
 
         .team-header {
-            text-align: center;
             margin-bottom: 80px;
-        }
-        .team-header .section-desc {
-            margin: 0 auto;
         }
 
         .team-grid {
@@ -872,12 +861,11 @@
 
         /* ===== FAQ Section ===== */
         .faq {
-            padding: 140px 0;
+            padding: 80px 0;
             border-top: 1px solid var(--dark-border);
         }
 
         .faq-header {
-            text-align: center;
             margin-bottom: 64px;
         }
 
@@ -954,7 +942,7 @@
 
         /* ===== Contact Section ===== */
         .contact {
-            padding: 120px 0;
+            padding: 80px 0;
             position: relative;
             overflow: hidden;
         }
@@ -1170,7 +1158,7 @@
         <div class="container">
             <div class="about-grid">
                 <div class="about-text reveal">
-                    <span class="section-label" style="font-size: 40px; letter-spacing: 0.15em; margin-bottom: 24px;">About Us</span>
+                    <span class="section-label">About Us</span>
                     <h2 style="font-size: clamp(24px, 4vw, 56px); font-weight: 800; line-height: 1.4; letter-spacing: -0.02em; margin-bottom: 32px; white-space: nowrap;">
                         <span style="display:block;">農業の情報の非対称性を解消し、</span>
                         <span style="display:block;">共に気候変動に適応する農業へ。</span>
@@ -1191,14 +1179,15 @@
     <section class="services" id="services">
         <div class="container">
             <div class="services-header reveal">
-                <span class="section-label" style="font-size: 40px; letter-spacing: 0.15em; margin-bottom: 24px;">Service</span>
+                <span class="section-label">Service</span>
                 <h2 class="section-title" style="white-space: nowrap;">
                     <span style="display:block;">Farmilleは、農業資材（BS資材）について、</span>
                     <span style="display:block;">農家コミュニティがレビューを行うプラットフォームです。</span>
                 </h2>
-                <p class="section-desc" style="max-width: none; white-space: normal;">
-                    <span style="display:block; margin-bottom: 4px;">デジタルの力で農業資材の実証・評価・流通を革新します。</span>
-                    メーカー様に「最適な実証テスト環境」・「評価に基づいたマーケティング」を提供し、その結果を農家に還元する新しいエコシステムです。
+                <p class="section-desc" style="max-width: none; white-space: normal; line-height: 2;">
+                    <span style="display:block; margin-bottom: 8px;">猛暑や干ばつなど、気候変動による予期せぬ環境ストレスが多発する現在、「農業版サプリメント」とも言えるBS資材（バイオスティミュラント）の活用が急務となっています。</span>
+                    <span style="display:block; margin-bottom: 8px;">しかし、現場では「本当に効くのか」という生きた情報が不足し、業界全体で実証データが分断されています。</span>
+                    <span style="display:block;">既存のサプライチェーンの中で、双方が深刻なペインを抱えています。</span>
                 </p>
             </div>
 
@@ -1280,32 +1269,22 @@
             <div class="problem-header reveal">
                 <span class="section-label">Problem</span>
                 <h2 class="section-title">BS資材の普及を阻む、情報の分断と実証の壁</h2>
-                <p class="section-desc">既存のサプライチェーンの中で、双方が深刻なペインを抱えています。</p>
             </div>
 
             <div class="problem-grid">
                 <!-- Manufacturer Pain -->
                 <div class="problem-card reveal">
-                    <div class="problem-card-header">
-                        <div class="problem-card-icon">
-                            <i data-lucide="building-2" style="width:24px;height:24px;"></i>
-                        </div>
+                    <div class="problem-card-header" style="margin-bottom: 24px; padding-bottom: 16px;">
                         <h3>資材メーカー・商社様</h3>
                     </div>
                     <ul class="problem-list">
                         <li class="problem-item">
-                            <div class="problem-item-dot">
-                                <i data-lucide="x" style="width:14px;height:14px;"></i>
-                            </div>
                             <div>
                                 <h4>実証環境の欠如と営業コスト</h4>
                                 <p>自社実証だけでは現場感が伝わらず、全国の有力農家にテストしてもらうための個別営業コストが莫大。</p>
                             </div>
                         </li>
                         <li class="problem-item">
-                            <div class="problem-item-dot">
-                                <i data-lucide="x" style="width:14px;height:14px;"></i>
-                            </div>
                             <div>
                                 <h4>客観的エビデンスの不足</h4>
                                 <p>「実際に農家が使って高評価だった」という定性・定量データがなく、新規取引先の開拓が困難。</p>
@@ -1316,26 +1295,17 @@
 
                 <!-- Farmer Pain -->
                 <div class="problem-card reveal">
-                    <div class="problem-card-header">
-                        <div class="problem-card-icon">
-                            <i data-lucide="tractor" style="width:24px;height:24px;"></i>
-                        </div>
+                    <div class="problem-card-header" style="margin-bottom: 24px; padding-bottom: 16px;">
                         <h3>農家様</h3>
                     </div>
                     <ul class="problem-list">
                         <li class="problem-item">
-                            <div class="problem-item-dot">
-                                <i data-lucide="x" style="width:14px;height:14px;"></i>
-                            </div>
                             <div>
                                 <h4>情報不足によるブラックボックス化</h4>
                                 <p>新しい資材を試したいが、公式スペックだけでは不安。混用時の失敗データがどこにもない。</p>
                             </div>
                         </li>
                         <li class="problem-item">
-                            <div class="problem-item-dot">
-                                <i data-lucide="x" style="width:14px;height:14px;"></i>
-                            </div>
                             <div>
                                 <h4>成功ノウハウの孤立</h4>
                                 <p>他地域のトップ農家とオンラインで情報交換できる、決定的なコミュニティが存在しない。</p>
@@ -1349,7 +1319,9 @@
 
     <!-- ===== Partners ===== -->
     <section class="partners">
-        <div class="partners-label">アクセラレーター採択実績・提携先</div>
+        <div class="container">
+            <div class="partners-label">アクセラレーター採択実績・提携先</div>
+        </div>
         <div class="partners-track-wrapper">
             <div class="partners-track">
                 <div class="partner-item">Soil100 第4期</div>
@@ -1443,9 +1415,8 @@
     <!-- ===== Team ===== -->
     <section class="team" id="team">
         <div class="container">
-            <div class="team-header reveal">
-                <span class="section-label">Team</span>
-                <h2 class="section-title">圧倒的な行動力で一次情報を足で稼ぐ、現場主義のチーム</h2>
+            <div class="team-header reveal" style="margin-bottom: 40px;">
+                <span class="section-label" style="margin-bottom: 0;">Team</span>
             </div>
 
             <div class="team-grid">
@@ -1543,13 +1514,9 @@
                 メーカー様・商社様向けに「既存顧客のデータ資産化」や「新規製品の実証（R&D接続）」など、柔軟なプランをご提案いたします。
             </p>
             <div class="contact-actions">
-                <a href="mailto:info@farmille.com" class="btn btn-white">
+                <a href="mailto:rowsey.okuda@farmille.com" class="btn btn-white">
                     お問い合わせ・ご相談
                     <i data-lucide="mail" style="width:16px;height:16px;"></i>
-                </a>
-                <a href="mailto:info@farmille.com" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">
-                    実証・PoC のご相談
-                    <i data-lucide="flask-conical" style="width:16px;height:16px;"></i>
                 </a>
             </div>
         </div>
