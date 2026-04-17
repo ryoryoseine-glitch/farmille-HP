@@ -27,17 +27,17 @@
             --green-light: #3a9963;
             --green-dark: #1e5c3a;
             --green-subtle: #e8f5ee;
-            --green-glow: rgba(45, 122, 79, 0.15);
+            --green-glow: rgba(45, 122, 79, 0.1);
 
-            --dark-bg: #0a0a0a;
-            --dark-card: #141414;
-            --dark-card-hover: #1a1a1a;
-            --dark-border: #222222;
-            --dark-border-hover: #333333;
+            --dark-bg: #ffffff;
+            --dark-card: #f8f9fa;
+            --dark-card-hover: #f0f2f5;
+            --dark-border: #e5e7eb;
+            --dark-border-hover: #d1d5db;
 
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255,255,255,0.7);
-            --text-muted: rgba(255,255,255,0.4);
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
             --text-on-green: #ffffff;
 
             --font-en: 'Inter', sans-serif;
@@ -148,13 +148,13 @@
         }
 
         .btn-white {
-            background: #ffffff;
-            color: var(--dark-bg);
+            background: #111827;
+            color: #ffffff;
         }
         .btn-white:hover {
-            background: #f0f0f0;
+            background: #1f2937;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255,255,255,0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         }
 
         /* ===== Navigation ===== */
@@ -166,7 +166,7 @@
             z-index: 100;
             padding: 0 24px;
             transition: all var(--transition-smooth);
-            background: rgba(10, 10, 10, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid transparent;
@@ -244,7 +244,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 10, 10, 0.98);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             z-index: 99;
             padding: 40px 24px;
@@ -312,8 +312,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
             background-size: 80px 80px;
             z-index: 0;
         }
@@ -349,7 +349,7 @@
             line-height: 1.05;
             letter-spacing: -0.03em;
             margin-bottom: 28px;
-            background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            background: linear-gradient(135deg, #111827 0%, #374151 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -793,7 +793,7 @@
             font-family: var(--font-en);
             font-size: 72px;
             font-weight: 900;
-            color: rgba(255,255,255,0.03);
+            color: rgba(0,0,0,0.04);
             position: absolute;
             top: -8px;
             right: 16px;
@@ -861,7 +861,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--dark-border), var(--dark-card));
+            background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
             margin: 0 auto 24px;
             display: flex;
             align-items: center;
@@ -990,8 +990,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
             background-size: 60px 60px;
         }
 
@@ -1002,7 +1002,7 @@
         }
 
         .contact .section-label {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.7);
         }
 
         .contact .section-title {
