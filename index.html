@@ -1,192 +1,1234 @@
 <!DOCTYPE html>
-<html lang="ja" class="scroll-smooth">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmille（ファーミル）| 農業資材の実証＆レビュープラットフォーム</title>
-    
-    <!-- Google Fonts: Noto Sans JP -->
+    <meta name="description" content="Farmilleは、全国のイノベーター農家とBS資材メーカーを繋ぐ、実証＆レビュープラットフォームです。気候変動に打ち勝つための確かな情報を、現場のネットワークから生み出します。">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            /* ロゴ画像から抽出した深いグリーンとダークカラー */
-                            green: '#357a53', 
-                            greenLight: '#f0f7f3',
-                            greenHover: '#2a6343',
-                            dark: '#1d1d1f', /* ネイビーの代わりに、よりモダンなダークグレーを採用 */
-                            darkLight: '#333336',
-                            accent: '#e6f4ea'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans JP"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* 無限スクロールアニメーション */
-        @keyframes scroll {
+        /* ===== CSS Reset & Variables ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-primary: #2d7a4f;
+            --green-light: #3a9963;
+            --green-dark: #1e5c3a;
+            --green-subtle: #e8f5ee;
+            --green-glow: rgba(45, 122, 79, 0.15);
+
+            --dark-bg: #0a0a0a;
+            --dark-card: #141414;
+            --dark-card-hover: #1a1a1a;
+            --dark-border: #222222;
+            --dark-border-hover: #333333;
+
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-on-green: #ffffff;
+
+            --font-en: 'Inter', sans-serif;
+            --font-jp: 'Noto Sans JP', 'Inter', sans-serif;
+
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-jp);
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ===== Utility Classes ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            font-family: var(--font-en);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-jp);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 14px 32px;
+            border-radius: var(--radius-full);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--green-primary);
+            color: var(--text-on-green);
+        }
+        .btn-primary:hover {
+            background: var(--green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--green-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--dark-border-hover);
+        }
+        .btn-outline:hover {
+            border-color: var(--green-primary);
+            color: var(--green-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-white {
+            background: #ffffff;
+            color: var(--dark-bg);
+        }
+        .btn-white:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.1);
+        }
+
+        /* ===== Navigation ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 24px;
+            transition: all var(--transition-smooth);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+        }
+        .nav.scrolled {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-en);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green-primary);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-en);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            padding: 10px 24px !important;
+            font-size: 13px !important;
+        }
+
+        .nav-mobile-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 99;
+            padding: 40px 24px;
+        }
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--dark-border);
+            transition: color var(--transition-fast);
+        }
+        .mobile-menu a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+            animation: float-glow 8s ease-in-out infinite;
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(45, 122, 79, 0.08) 0%, transparent 70%);
+            animation: float-glow 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float-glow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -20px); }
+        }
+
+        .hero-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-en);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--green-primary);
+        }
+
+        .hero-headline-en {
+            font-family: var(--font-en);
+            font-size: clamp(40px, 7vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-headline-jp {
+            font-size: clamp(16px, 2.5vw, 22px);
+            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 48px;
+            max-width: 600px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: var(--font-en);
+            letter-spacing: 0.1em;
+            animation: scroll-bounce 2s ease-in-out infinite;
+        }
+        @keyframes scroll-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== About Section ===== */
+        .about {
+            padding: 140px 0;
+            position: relative;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text .lead {
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        .about-text p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 20px;
+        }
+
+        .about-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--green-light);
+            margin-top: 16px;
+            transition: gap var(--transition-fast);
+        }
+        .about-link:hover {
+            gap: 14px;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-visual-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-primary), var(--green-light));
+        }
+
+        .about-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .about-stat {
+            text-align: center;
+        }
+
+        .about-stat .number {
+            font-family: var(--font-en);
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--green-light);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .about-stat .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .about-highlight {
+            margin-top: 32px;
+            padding: 24px;
+            background: rgba(45, 122, 79, 0.08);
+            border-left: 3px solid var(--green-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .about-highlight p {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Services Section ===== */
+        .services {
+            padding: 140px 0;
+            position: relative;
+        }
+
+        .services-header {
+            margin-bottom: 80px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            border-color: var(--dark-border-hover);
+            background: var(--dark-card-hover);
+            transform: translateY(-4px);
+        }
+
+        .service-card-label {
+            font-family: var(--font-en);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 24px;
+        }
+
+        .service-card-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(45, 122, 79, 0.1);
+            border: 1px solid rgba(45, 122, 79, 0.2);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--green-light);
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .service-card .subtitle {
+            font-size: 13px;
+            color: var(--green-light);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .service-card-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition-fast);
+        }
+        .service-card:hover .service-card-link {
+            color: var(--green-light);
+            gap: 10px;
+        }
+
+        /* ===== Problem Section ===== */
+        .problem {
+            padding: 140px 0;
+            position: relative;
+        }
+
+        .problem-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .problem-header .section-desc {
+            margin: 0 auto;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .problem-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            transition: all var(--transition-smooth);
+        }
+        .problem-card:hover {
+            border-color: var(--dark-border-hover);
+        }
+
+        .problem-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .problem-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .problem-card:first-child .problem-card-icon {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+        .problem-card:last-child .problem-card-icon {
+            background: rgba(45, 122, 79, 0.1);
+            color: var(--green-light);
+        }
+
+        .problem-card-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .problem-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .problem-item {
+            display: flex;
+            gap: 16px;
+        }
+
+        .problem-item-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: #ef4444;
+        }
+
+        .problem-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .problem-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Partner Logos ===== */
+        .partners {
+            padding: 80px 0;
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .partners-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .partners-track-wrapper {
+            position: relative;
+        }
+        .partners-track-wrapper::before,
+        .partners-track-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 120px;
+            z-index: 2;
+        }
+        .partners-track-wrapper::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--dark-bg), transparent);
+        }
+        .partners-track-wrapper::after {
+            right: 0;
+            background: linear-gradient(-90deg, var(--dark-bg), transparent);
+        }
+
+        .partners-track {
+            display: flex;
+            width: max-content;
+            animation: scroll-logos 35s linear infinite;
+        }
+
+        @keyframes scroll-logos {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
-        .animate-scroll {
-            animation: scroll 30s linear infinite;
-        }
-        .carousel-track {
+
+        .partner-item {
+            flex-shrink: 0;
+            width: 200px;
+            height: 72px;
+            margin: 0 16px;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-md);
             display: flex;
-            width: max-content;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
         }
-        /* スクロールバー非表示 */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .partner-item:hover {
+            border-color: var(--dark-border-hover);
+            color: var(--text-secondary);
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        /* ===== Features Section ===== */
+        .features {
+            padding: 140px 0;
+            position: relative;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .features-header .section-desc {
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            border-color: var(--dark-border-hover);
+            transform: translateY(-4px);
+        }
+
+        .feature-card-num {
+            font-family: var(--font-en);
+            font-size: 72px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            position: absolute;
+            top: -8px;
+            right: 16px;
+            line-height: 1;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Team Section ===== */
+        .team {
+            padding: 140px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .team-header .section-desc {
+            margin: 0 auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .team-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            text-align: center;
+            transition: all var(--transition-smooth);
+        }
+        .team-card:hover {
+            border-color: var(--dark-border-hover);
+            transform: translateY(-4px);
+        }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--dark-border), var(--dark-card));
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 2px solid var(--dark-border);
+            overflow: hidden;
+        }
+
+        .team-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .team-card .role {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-light);
+            margin-bottom: 16px;
+        }
+
+        .team-card .bio {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        /* ===== FAQ Section ===== */
+        .faq {
+            padding: 140px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: border-color var(--transition-fast);
+        }
+        .faq-item:hover {
+            border-color: var(--dark-border-hover);
+        }
+
+        .faq-question {
+            padding: 24px 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            user-select: none;
+        }
+
+        .faq-q-mark {
+            font-family: var(--font-en);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--green-primary);
+            flex-shrink: 0;
+            line-height: 1.6;
+        }
+
+        .faq-q-text {
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .faq-toggle {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            transition: transform var(--transition-fast);
+            margin-top: 4px;
+        }
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-smooth);
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 28px 24px;
+            padding-left: 62px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        /* ===== Contact Section ===== */
+        .contact {
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-primary) 50%, #1a6b40 100%);
+        }
+        .contact-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .contact .section-label {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .contact .section-title {
+            color: #ffffff;
+        }
+
+        .contact .section-desc {
+            color: rgba(255,255,255,0.8);
+            margin: 0 auto 48px;
+        }
+
+        .contact-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-en);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: color var(--transition-fast);
+        }
+        .footer-links a:hover {
+            color: var(--text-secondary);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--dark-border);
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-en);
+        }
+
+        /* ===== Animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .nav-mobile-btn { display: block; }
+            .about-grid { grid-template-columns: 1fr; gap: 48px; }
+            .about-visual { order: -1; }
+            .services-grid { grid-template-columns: 1fr; }
+            .problem-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+
+            .hero { min-height: auto; padding: 140px 0 80px; }
+            .hero-headline-en { font-size: 36px; }
+            .hero-headline-jp { font-size: 15px; }
+            .hero-actions { flex-direction: column; }
+            .hero-actions .btn { width: 100%; justify-content: center; }
+            .hero-scroll-indicator { display: none; }
+
+            .about, .services, .problem, .features, .team, .faq { padding: 80px 0; }
+
+            .about-stat .number { font-size: 36px; }
+
+            .team-grid { grid-template-columns: 1fr; }
+
+            .contact { padding: 80px 0; }
+            .contact-actions { flex-direction: column; align-items: center; }
+
+            .footer-inner { flex-direction: column; gap: 24px; }
+            .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .problem-grid { grid-template-columns: 1fr 1fr; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
-<body class="font-sans text-brand-dark antialiased bg-white selection:bg-brand-greenLight selection:text-brand-green">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <!-- Logo -->
-                <a href="#" class="flex items-center gap-2">
-                    <!-- お送りいただいたロゴ画像に差し替えるプレースホルダー -->
-                    <div class="h-10 flex items-center">
-                        <img src="" alt="Farmille" class="h-full object-contain max-w-[150px] bg-slate-100 rounded text-xs text-slate-400 px-2" onerror="this.outerHTML='<span class=\'font-black text-2xl tracking-tight text-brand-green\'>Farmille</span>'">
-                    </div>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#about" class="text-sm font-bold text-slate-600 hover:text-brand-green transition-colors">私たちについて</a>
-                    <a href="#problem" class="text-sm font-bold text-slate-600 hover:text-brand-green transition-colors">課題</a>
-                    <a href="#solution" class="text-sm font-bold text-slate-600 hover:text-brand-green transition-colors">提供価値</a>
-                    <a href="#cases" class="text-sm font-bold text-slate-600 hover:text-brand-green transition-colors">実績</a>
-                    <a href="#contact" class="px-6 py-2.5 bg-brand-green text-white text-sm font-bold rounded-full hover:bg-brand-greenHover transition-colors shadow-md hover:shadow-lg">
-                        お問い合わせ
-                    </a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-slate-600 hover:text-brand-green focus:outline-none">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
-            </div>
+    <!-- ===== Navigation ===== -->
+    <nav class="nav" id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span class="logo-dot"></span>Farmille
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Service</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="btn btn-primary nav-cta">お問い合わせ</a></li>
+            </ul>
+            <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="メニュー">
+                <i data-lucide="menu" style="width:24px;height:24px;"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- ① HERO -->
-    <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-24 overflow-hidden bg-brand-greenLight">
-        <!-- 背景装飾 -->
-        <div class="absolute top-0 right-0 -translate-y-12 translate-x-1/3 opacity-5 pointer-events-none">
-            <i data-lucide="leaf" class="w-[800px] h-[800px] text-brand-green"></i>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#services" class="mobile-link">Service</a>
+        <a href="#features" class="mobile-link">Features</a>
+        <a href="#team" class="mobile-link">Team</a>
+        <a href="#faq" class="mobile-link">FAQ</a>
+        <a href="#contact" class="mobile-link">お問い合わせ</a>
+    </div>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grid-lines"></div>
         </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-                <!-- 左側：テキスト -->
-                <div class="text-center lg:text-left">
-                    <div class="inline-block px-4 py-1.5 bg-white text-brand-green font-bold text-sm rounded-full shadow-sm mb-6 border border-brand-green/20">
-                        農業資材の実証＆レビュープラットフォーム
-                    </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-black text-brand-dark leading-[1.2] tracking-tight mb-6">
-                        あの資材、<br class="hidden lg:block">実際に使ったら<br>どうだったんだろう？<br>
-                        <span class="text-brand-green">農家の知恵が、<br class="hidden sm:block lg:hidden">ここに集まる。</span>
-                    </h1>
-                    <p class="text-lg text-slate-600 mb-10 leading-relaxed font-medium max-w-2xl mx-auto lg:mx-0">
-                        Farmille（ファーミル）は、全国のイノベーター農家とBS資材メーカーを繋ぐ、実証＆レビュープラットフォームです。<br class="hidden md:block">
-                        気候変動に打ち勝つための確かな情報を、現場のネットワークから生み出します。
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-brand-dark text-white font-bold rounded-full hover:bg-brand-darkLight transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 border border-transparent">
-                            メーカー・商社の方へ <span class="text-xs font-normal opacity-80">（実証のご相談）</span>
-                            <i data-lucide="building-2" class="w-5 h-5 ml-1"></i>
-                        </a>
-                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-white text-brand-green font-bold rounded-full hover:bg-slate-50 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 border border-brand-green/20">
-                            農家の方へ <span class="text-xs font-normal opacity-80">（無料先行登録）</span>
-                            <i data-lucide="tractor" class="w-5 h-5 ml-1"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 右側：MVP製品画像モックアップ -->
-                <div class="relative mx-auto w-full max-w-lg lg:max-w-none lg:translate-x-8">
-                    <!-- PC風モックアップ枠 -->
-                    <div class="bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden aspect-[4/3] flex flex-col transform lg:-rotate-2 transition-transform hover:rotate-0 duration-500">
-                        <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                        </div>
-                        <div class="flex-1 bg-slate-50 relative flex items-center justify-center p-2">
-                            <!-- ここに「製品・MVP ホーム画面」の画像を挿入 -->
-                            <img src="" alt="Farmille ホーム画面" class="w-full h-full object-cover rounded shadow-sm bg-white" onerror="this.outerHTML='<div class=\'text-slate-400 text-sm font-bold flex flex-col items-center\'><i data-lucide=\'image\' class=\'w-10 h-10 mb-2\'></i>MVPホーム画面を挿入</div>'">
-                        </div>
-                    </div>
-                    <!-- スマホ風モックアップ枠（重ねて配置） -->
-                    <div class="absolute -bottom-8 -left-8 w-1/3 min-w-[140px] max-w-[180px] bg-white rounded-[2rem] shadow-2xl border-4 border-slate-800 overflow-hidden aspect-[9/19] flex items-center justify-center transform lg:rotate-6">
-                        <!-- ここに「製品・MVP レビュー閲覧画面(スマホ)」等の画像を挿入 -->
-                        <img src="" alt="Farmille スマホ画面" class="w-full h-full object-cover bg-slate-50" onerror="this.outerHTML='<div class=\'text-slate-400 text-xs font-bold text-center px-2\'><i data-lucide=\'smartphone\' class=\'w-8 h-8 mx-auto mb-1\'></i>スマホ版<br>画面挿入</div>'">
-                    </div>
-                </div>
+        <div class="container hero-content">
+            <div class="hero-eyebrow">Review & Proof-of-Concept Platform for Agriculture</div>
+            <h1 class="hero-headline-en">
+                CONNECTING<br>
+                FARMERS' WISDOM,<br>
+                INNOVATING<br>
+                AGRICULTURE.
+            </h1>
+            <p class="hero-headline-jp">
+                農家の知恵が、ここに集まる。<br>
+                全国のイノベーター農家とBS資材メーカーを繋ぐ、<br>
+                実証＆レビュープラットフォーム。
+            </p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">
+                    サービスを見る
+                    <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    お問い合わせ
+                </a>
             </div>
         </div>
-    </header>
+        <div class="hero-scroll-indicator">
+            SCROLL
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+        </div>
+    </section>
 
-    <!-- ② ABOUT US -->
-    <section id="about" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="order-2 lg:order-1">
-                    <!-- Figma等で図解を挿入するためのプレースホルダー -->
-                    <div class="bg-brand-greenLight rounded-2xl p-8 aspect-[4/3] flex flex-col items-center justify-center border border-brand-green/20 text-brand-green relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-white/40 transition-opacity group-hover:opacity-0"></div>
-                        <i data-lucide="network" class="w-16 h-16 mb-4 relative z-10"></i>
-                        <p class="font-bold relative z-10 text-center">ここに「ビジョン・エコシステム」の<br>図解を挿入</p>
-                        <p class="text-sm mt-2 relative z-10 text-brand-green/70">（ピッチ資料の内容をFigmaでリライト）</p>
-                    </div>
-                </div>
-                <div class="order-1 lg:order-2">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-px bg-brand-green"></div>
-                        <span class="text-brand-green font-bold tracking-wider uppercase text-sm">About Us</span>
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-8 leading-tight">
-                        気候変動と情報の非対称性を解消し、農家さんの自己実現を支える。
+    <!-- ===== About ===== -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <span class="section-label">About Us</span>
+                    <h2 class="section-title about-text lead">
+                        気候変動と情報の非対称性を解消し、<br>農家さんの自己実現を支える。
                     </h2>
-                    <div class="space-y-6 text-slate-600 leading-relaxed text-lg">
-                        <p>
-                            猛暑や干ばつなど、気候変動による予期せぬ環境ストレスが多発する現在、あらかじめ決められた防除暦だけでは対応が難しく、「農業版サプリメント」とも言えるBS資材（バイオスティミュラント）の活用が急務となっています。
-                        </p>
-                        <p>
-                            しかし、現場では「本当に効くのか」という生きた情報が不足し、業界全体で実証データが分断されています。
-                        </p>
-                        <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-brand-green">
-                            <p class="font-bold text-brand-dark">
-                                Farmilleは、全国のトップ農家の知恵を資産化し、既存のしがらみを持たない「完全な中立性」で農業界に情報革命を起こす、東大発スタートアップです。
-                            </p>
+                    <p>
+                        猛暑や干ばつなど、気候変動による予期せぬ環境ストレスが多発する現在、「農業版サプリメント」とも言えるBS資材（バイオスティミュラント）の活用が急務となっています。
+                    </p>
+                    <p>
+                        しかし、現場では「本当に効くのか」という生きた情報が不足し、業界全体で実証データが分断されています。
+                    </p>
+                    <a href="#services" class="about-link">
+                        詳しくみる <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                    </a>
+                </div>
+                <div class="about-visual reveal">
+                    <div class="about-visual-card">
+                        <div class="about-stat-grid">
+                            <div class="about-stat">
+                                <div class="number">5+</div>
+                                <div class="label">採択アクセラレーター</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">10+</div>
+                                <div class="label">提携農家・パートナー</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">5</div>
+                                <div class="label">展開地域</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">∞</div>
+                                <div class="label">中立的レビュー</div>
+                            </div>
+                        </div>
+                        <div class="about-highlight">
+                            <p>Farmilleは、全国のトップ農家の知恵を資産化し、既存のしがらみを持たない「完全な中立性」で農業界に情報革命を起こす、東大発スタートアップです。</p>
                         </div>
                     </div>
                 </div>
@@ -194,506 +1236,430 @@
         </div>
     </section>
 
-    <!-- ③ PROBLEM -->
-    <section id="problem" class="py-24 bg-slate-50 border-y border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Problem</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">
-                    BS資材の普及を阻む、<br class="sm:hidden">「情報の分断」と「実証の壁」
+    <!-- ===== Services ===== -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header reveal">
+                <span class="section-label">Service</span>
+                <h2 class="section-title">
+                    単発の営業から、「レビューが農家を連れてくる」仕組みへ
                 </h2>
-                <p class="text-slate-600">既存のサプライチェーンの中で、双方が深刻なペインを抱えています。</p>
+                <p class="section-desc">
+                    デジタルの力で農業資材の実証・評価・流通を革新します。メーカー様に最適な実証テスト環境を提供し、その結果を農家に還元する新しいエコシステムです。
+                </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                <!-- メーカー・商社様の課題 -->
-                <div class="bg-white rounded-2xl p-8 lg:p-10 shadow-sm border border-slate-200">
-                    <div class="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
-                        <div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-brand-dark">
-                            <i data-lucide="building-2" class="w-7 h-7"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-brand-dark">資材メーカー・商社様</h3>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card reveal">
+                    <div class="service-card-label">Review Platform</div>
+                    <div class="service-card-icon">
+                        <i data-lucide="star" style="width:24px;height:24px;"></i>
                     </div>
-                    <ul class="space-y-8">
-                        <li class="flex gap-4">
-                            <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-1">
-                                <i data-lucide="x" class="w-5 h-5 text-red-500"></i>
+                    <h3>実証＆レビュープラットフォーム</h3>
+                    <div class="subtitle">農家の生の声を資産化する中核サービス</div>
+                    <p>
+                        全国のイノベーター農家による定性・定量的な評価データをプラットフォーム上に蓄積。そのデータが客観的根拠となり、マジョリティ農家やJA、商社への説得材料として機能します。
+                    </p>
+                    <a href="#contact" class="service-card-link">
+                        詳しく見る <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                    </a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card reveal">
+                    <div class="service-card-label">Research & PoC</div>
+                    <div class="service-card-icon">
+                        <i data-lucide="flask-conical" style="width:24px;height:24px;"></i>
+                    </div>
+                    <h3>リサーチ＆PoC支援</h3>
+                    <div class="subtitle">ターゲット農家への実証テストマーケティング</div>
+                    <p>
+                        自力では開拓不可能な全国のイノベーター農家へ瞬時にアクセス。ゼロからの営業コストを劇的に削減し、最速のテストマーケティングを実現します。
+                    </p>
+                    <a href="#contact" class="service-card-link">
+                        詳しく見る <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                    </a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card reveal">
+                    <div class="service-card-label">Community</div>
+                    <div class="service-card-icon">
+                        <i data-lucide="users" style="width:24px;height:24px;"></i>
+                    </div>
+                    <h3>農家コミュニティ</h3>
+                    <div class="subtitle">スレッド型情報交換プラットフォーム</div>
+                    <p>
+                        単一のレビューに対し、農家同士が深掘り・情報共有できる交流機能。他地域のトップ農家とオンラインで繋がる決定的なプラットフォームを提供します。
+                    </p>
+                    <a href="#contact" class="service-card-link">
+                        詳しく見る <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Problem ===== -->
+    <section class="problem" id="problem">
+        <div class="container">
+            <div class="problem-header reveal">
+                <span class="section-label">Problem</span>
+                <h2 class="section-title">BS資材の普及を阻む、情報の分断と実証の壁</h2>
+                <p class="section-desc">既存のサプライチェーンの中で、双方が深刻なペインを抱えています。</p>
+            </div>
+
+            <div class="problem-grid">
+                <!-- Manufacturer Pain -->
+                <div class="problem-card reveal">
+                    <div class="problem-card-header">
+                        <div class="problem-card-icon">
+                            <i data-lucide="building-2" style="width:24px;height:24px;"></i>
+                        </div>
+                        <h3>資材メーカー・商社様</h3>
+                    </div>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <div class="problem-item-dot">
+                                <i data-lucide="x" style="width:14px;height:14px;"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-brand-dark text-lg mb-2">実証環境の欠如と営業コスト</h4>
-                                <p class="text-slate-600 leading-relaxed">自社実証だけでは現場感が伝わらず、実際の圃場データが集まらない。全国の有力農家にテストしてもらうための個別営業コストが莫大。</p>
+                                <h4>実証環境の欠如と営業コスト</h4>
+                                <p>自社実証だけでは現場感が伝わらず、全国の有力農家にテストしてもらうための個別営業コストが莫大。</p>
                             </div>
                         </li>
-                        <li class="flex gap-4">
-                            <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-1">
-                                <i data-lucide="x" class="w-5 h-5 text-red-500"></i>
+                        <li class="problem-item">
+                            <div class="problem-item-dot">
+                                <i data-lucide="x" style="width:14px;height:14px;"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-brand-dark text-lg mb-2">客観的エビデンスの不足</h4>
-                                <p class="text-slate-600 leading-relaxed">商社やJAに新規商材として取り扱ってもらうための「実際に農家が使って高評価だった」という大義名分（定性・定量データ）がない。</p>
+                                <h4>客観的エビデンスの不足</h4>
+                                <p>「実際に農家が使って高評価だった」という定性・定量データがなく、新規取引先の開拓が困難。</p>
                             </div>
                         </li>
                     </ul>
                 </div>
 
-                <!-- 農家様の課題 -->
-                <div class="bg-white rounded-2xl p-8 lg:p-10 shadow-sm border border-slate-200">
-                    <div class="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
-                        <div class="w-14 h-14 bg-brand-greenLight rounded-xl flex items-center justify-center text-brand-green">
-                            <i data-lucide="tractor" class="w-7 h-7"></i>
+                <!-- Farmer Pain -->
+                <div class="problem-card reveal">
+                    <div class="problem-card-header">
+                        <div class="problem-card-icon">
+                            <i data-lucide="tractor" style="width:24px;height:24px;"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-brand-green">農家様</h3>
+                        <h3>農家様</h3>
                     </div>
-                    <ul class="space-y-8">
-                        <li class="flex gap-4">
-                            <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-1">
-                                <i data-lucide="x" class="w-5 h-5 text-red-500"></i>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <div class="problem-item-dot">
+                                <i data-lucide="x" style="width:14px;height:14px;"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-brand-dark text-lg mb-2">情報不足によるブラックボックス化</h4>
-                                <p class="text-slate-600 leading-relaxed">新しい資材を試したいが、公式スペックだけでは不安。省力化のための「3〜4種混用時の薬害（失敗）データ」がどこにもない。</p>
+                                <h4>情報不足によるブラックボックス化</h4>
+                                <p>新しい資材を試したいが、公式スペックだけでは不安。混用時の失敗データがどこにもない。</p>
                             </div>
                         </li>
-                        <li class="flex gap-4">
-                            <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-1">
-                                <i data-lucide="x" class="w-5 h-5 text-red-500"></i>
+                        <li class="problem-item">
+                            <div class="problem-item-dot">
+                                <i data-lucide="x" style="width:14px;height:14px;"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-brand-dark text-lg mb-2">成功ノウハウの孤立</h4>
-                                <p class="text-slate-600 leading-relaxed">他地域のトップ農家とオンラインで情報交換できる、決定的なコミュニティが存在しない。</p>
+                                <h4>成功ノウハウの孤立</h4>
+                                <p>他地域のトップ農家とオンラインで情報交換できる、決定的なコミュニティが存在しない。</p>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- 図解プレースホルダー -->
-            <div class="mt-12 max-w-4xl mx-auto bg-white rounded-2xl p-8 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 text-slate-400 h-40">
-                <p class="font-bold">ここに「課題の構造（情報の非対称性）」の図解を挿入</p>
-                <p class="text-sm mt-1">（メーカー・商社・農家の関係図）</p>
+    <!-- ===== Partners ===== -->
+    <section class="partners">
+        <div class="partners-label">アクセラレーター採択実績・提携先</div>
+        <div class="partners-track-wrapper">
+            <div class="partners-track">
+                <div class="partner-item">Soil100 第4期</div>
+                <div class="partner-item">TOKYO Co-cial IMPACT</div>
+                <div class="partner-item">Social X Studio 第1期</div>
+                <div class="partner-item">U-25 AI Accelerator</div>
+                <div class="partner-item">OASISアクセラ 第3期</div>
+                <div class="partner-item">イノチオアグリ様</div>
+                <div class="partner-item">めぐりトマト様</div>
+                <div class="partner-item">モリタ農園様</div>
+                <!-- Duplicate for seamless loop -->
+                <div class="partner-item">Soil100 第4期</div>
+                <div class="partner-item">TOKYO Co-cial IMPACT</div>
+                <div class="partner-item">Social X Studio 第1期</div>
+                <div class="partner-item">U-25 AI Accelerator</div>
+                <div class="partner-item">OASISアクセラ 第3期</div>
+                <div class="partner-item">イノチオアグリ様</div>
+                <div class="partner-item">めぐりトマト様</div>
+                <div class="partner-item">モリタ農園様</div>
             </div>
         </div>
     </section>
 
-    <!-- ④ SOLUTION / SERVICE -->
-    <section id="solution" class="py-24 bg-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Solution / Service</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6 leading-tight">
-                    単発の営業から、<br class="sm:hidden">「レビューが農家を連れてくる」仕組みへ
-                </h2>
-                <p class="text-lg text-slate-600 leading-relaxed">
-                    Farmilleは単なる口コミサイトではなく、メーカー様に「最適な実証テスト環境（リサーチパイ）」を提供し、その結果を農家に還元する新しいエコシステムです。
-                </p>
+    <!-- ===== Features ===== -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-header reveal">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">圧倒的な「ネットワーク」と、現場に寄り添うプロダクト</h2>
+                <p class="section-desc">Farmilleが持つ独自の強みと機能をご紹介します。</p>
             </div>
 
-            <!-- エコシステムの図解・MVP画面を活かすエリア -->
-            <div class="mb-20 bg-slate-50 rounded-3xl p-8 lg:p-12 border border-slate-200">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-2xl font-bold text-brand-dark mb-6">客観的データが、新たな商流を開拓する</h3>
-                        <p class="text-slate-600 mb-6 leading-relaxed">
-                            全国のイノベーター農家による定性・定量的な評価データをプラットフォーム上に蓄積。そのデータが「客観的根拠」となり、マジョリティ農家やJA、商社への説得材料として機能します。
-                        </p>
-                        <ul class="space-y-4">
-                            <li class="flex items-center gap-3 text-slate-700 font-medium">
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-green"></i> 実際の圃場での生きたデータを獲得
-                            </li>
-                            <li class="flex items-center gap-3 text-slate-700 font-medium">
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-green"></i> ターゲットに絞ったテストマーケティング
-                            </li>
-                            <li class="flex items-center gap-3 text-slate-700 font-medium">
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-green"></i> 掲載されていること自体が競争優位に
-                            </li>
-                        </ul>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">01</div>
+                    <div class="feature-icon">
+                        <i data-lucide="trending-down" style="width:22px;height:22px;"></i>
                     </div>
-                    <!-- MVP「製品情報画面」等のプレースホルダー -->
-                    <div class="relative w-full aspect-video bg-white rounded-xl shadow-lg border border-slate-200 flex items-center justify-center p-2">
-                        <img src="" alt="MVP製品情報" class="w-full h-full object-cover rounded" onerror="this.outerHTML='<div class=\'text-slate-400 text-center\'><i data-lucide=\'monitor\' class=\'w-12 h-12 mx-auto mb-2\'></i><p class=\'font-bold\'>製品・MVP 製品情報画面を挿入</p></div>'">
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- 価値1 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-brand-greenLight rounded-xl flex items-center justify-center text-brand-green mb-6">
-                        <i data-lucide="trending-down" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-4">圧倒的な営業・実証コストの削減</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                        自力では開拓不可能な全国の「イノベーター農家」へ瞬時にアクセス。ゼロからの営業コストを劇的に削減し、最速のテストマーケティング（PoC）を実現します。
-                    </p>
-                </div>
-                
-                <!-- 価値2 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-brand-greenLight rounded-xl flex items-center justify-center text-brand-green mb-6">
-                        <i data-lucide="database" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-4">現場のリアルな一次データ獲得</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                        自社実証では得られない「実際の圃場での使用感」や「複数混用時の薬害データ」を独占的に収集。商社やマジョリティ農家を説得する強力なエビデンスとなります。
-                    </p>
+                    <h3>圧倒的な営業コスト削減</h3>
+                    <p>自力では開拓不可能な全国のイノベーター農家へ瞬時にアクセス。最速のテストマーケティングを実現します。</p>
                 </div>
 
-                <!-- 価値3 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-brand-greenLight rounded-xl flex items-center justify-center text-brand-green mb-6">
-                        <i data-lucide="award" class="w-7 h-7"></i>
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">02</div>
+                    <div class="feature-icon">
+                        <i data-lucide="database" style="width:22px;height:22px;"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-4">掲載によるブランド化と新規商流開拓</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                        Farmille上で可視化された有力農家からの高評価は、それ自体が競争優位性に。客観的根拠として、新たな流通網の開拓を後押しします。
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ⑤ FEATURES (機能と独自価値 - 白背景ベースに変更) -->
-    <section id="features" class="py-24 bg-brand-greenLight relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Features</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6">
-                    圧倒的な「ネットワーク」と、<br class="sm:hidden">現場に寄り添うプロダクト
-                </h2>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-brand-green text-white rounded-full flex items-center justify-center mb-6">
-                        <i data-lucide="message-square" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-3">スレッド型農家コミュニティ</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        単一のレビューに対し、「この時間帯に散布した？」「うちの土壌では？」と農家同士が深掘り・情報共有できる交流機能を提供します。
-                    </p>
-                    <!-- MVP「コミュニティ一覧画面」プレースホルダー -->
-                    <div class="w-full aspect-[4/3] bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center p-1 overflow-hidden">
-                        <img src="" alt="コミュニティ機能" class="w-full h-full object-cover" onerror="this.outerHTML='<span class=\'text-xs text-slate-400 font-bold\'>コミュニティ画面</span>'">
-                    </div>
+                    <h3>現場のリアルな一次データ</h3>
+                    <p>「実際の圃場での使用感」や「複数混用時の薬害データ」を独占的に収集。強力なエビデンスになります。</p>
                 </div>
 
-                <!-- Feature 2 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-brand-green text-white rounded-full flex items-center justify-center mb-6">
-                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">03</div>
+                    <div class="feature-icon">
+                        <i data-lucide="award" style="width:22px;height:22px;"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-3">極限までシンプルな入力UI</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        多忙な現場の負担にならないようAIを活用。「対象作物」「使用感」「効果タグの選択」等に絞り込み、入力ハードルを極限まで下げます。
-                    </p>
-                    <!-- MVP「レビュー投稿画面」プレースホルダー -->
-                    <div class="w-full aspect-[4/3] bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center p-1 overflow-hidden">
-                        <img src="" alt="レビュー入力" class="w-full h-full object-cover" onerror="this.outerHTML='<span class=\'text-xs text-slate-400 font-bold\'>レビュー投稿画面</span>'">
-                    </div>
+                    <h3>掲載によるブランド化</h3>
+                    <p>有力農家からの高評価は、それ自体が競争優位性に。新たな流通網の開拓を後押しします。</p>
                 </div>
 
-                <!-- Feature 3 -->
-                <div class="bg-white rounded-2xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-brand-green text-white rounded-full flex items-center justify-center mb-6">
-                        <i data-lucide="scale" class="w-6 h-6"></i>
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">04</div>
+                    <div class="feature-icon">
+                        <i data-lucide="smartphone" style="width:22px;height:22px;"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-3">完全な中立性（しがらみの排除）</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        既存の特定商流（JA指定ルートや特定メーカー直販）に属さないため、忖度のないフラットな評価基盤を提供。クローズド実証と公開レビューを使い分けます。
-                    </p>
-                    <!-- MVP「ランキング画面」プレースホルダー -->
-                    <div class="w-full aspect-[4/3] bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center p-1 overflow-hidden">
-                        <img src="" alt="ランキング" class="w-full h-full object-cover" onerror="this.outerHTML='<span class=\'text-xs text-slate-400 font-bold\'>ランキング画面</span>'">
+                    <h3>極限までシンプルなUI</h3>
+                    <p>多忙な現場の負担にならないよう、入力ハードルを極限まで下げた直感的なインターフェースを提供。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">05</div>
+                    <div class="feature-icon">
+                        <i data-lucide="scale" style="width:22px;height:22px;"></i>
                     </div>
+                    <h3>完全な中立性</h3>
+                    <p>既存の特定商流に属さないため、忖度のないフラットな評価基盤を提供。信頼性の根幹を担保します。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">06</div>
+                    <div class="feature-icon">
+                        <i data-lucide="message-square" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>スレッド型コミュニティ</h3>
+                    <p>「この時間帯に散布した？」「うちの土壌では？」を農家同士が深掘り・共有できる場を提供します。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ⑥ CASES & TRACTION -->
-    <section id="cases" class="py-24 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Cases & Traction</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6">
-                    全国へ広がる農家ネットワークと、<br class="sm:hidden">確かな事業基盤
-                </h2>
-                <p class="text-lg text-slate-600">
-                    法人登記前（創業準備中）でありながら、すでに全国のトップ農家や有力商社との実証（PoC）がスタートしています。
-                </p>
+    <!-- ===== Team ===== -->
+    <section class="team" id="team">
+        <div class="container">
+            <div class="team-header reveal">
+                <span class="section-label">Team</span>
+                <h2 class="section-title">圧倒的な行動力で一次情報を足で稼ぐ、現場主義のチーム</h2>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 mb-16">
-                <!-- 提携農家・自治体 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 border-t-4 border-t-brand-green">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i data-lucide="map-pin" class="w-6 h-6 text-brand-green"></i>
-                        <h3 class="text-xl font-bold text-brand-dark">提携農家・自治体ネットワーク</h3>
+            <div class="team-grid">
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <i data-lucide="user" style="width:32px;height:32px;"></i>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">
-                        愛知県豊橋市（めぐりトマト様 等）、千葉県富津市（モリタ農園様 等）、滋賀県守山市（モリヤマメロン部会 様 等）をはじめ、和歌山、静岡などで先進的なリレーションを構築済み。
-                    </p>
+                    <h3>奥田 朗盛</h3>
+                    <div class="role">代表 / 東京大学工学部</div>
+                    <p class="bio">JICAつくばでアフリカ研修員に稲作技術を普及する中で、気候変動対策とBS資材の可能性を痛感。「農家さんこそヒーローである」という想いから起業を決意。松尾研等でのAI実装スキルも保有。</p>
                 </div>
 
-                <!-- 商社・メーカー -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 border-t-4 border-t-brand-dark">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i data-lucide="handshake" class="w-6 h-6 text-brand-dark"></i>
-                        <h3 class="text-xl font-bold text-brand-dark">商社・メーカーアライアンス</h3>
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <i data-lucide="user" style="width:32px;height:32px;"></i>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">
-                        愛知の有力商社「イノチオアグリ」様 等とのPoCに合意。相互送客による実証実験が稼働中。
-                    </p>
+                    <h3>根本 凌成</h3>
+                    <div class="role">事業統括責任者 / 青山学院大学</div>
+                    <p class="bio">toB向けAI SaaSサービスの営業・UIUX設計の経験を活かし、Farmilleのプロダクト開発全般とユーザー体験（CX）設計をリード。地方自治体への政策提言経験も持つ。</p>
                 </div>
-            </div>
-        </div>
 
-        <!-- アクセラレーター採択実績（無限スクロールカルーセル） -->
-        <div class="max-w-full overflow-hidden relative bg-slate-50 py-12">
-            <div class="text-center mb-8">
-                <h3 class="text-sm font-bold text-slate-400 tracking-widest uppercase">アクセラレーター採択実績</h3>
-            </div>
-            
-            <!-- グラデーションマスク -->
-            <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
-            <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
-
-            <div class="carousel-track animate-scroll">
-                <!-- ロゴグループ1 -->
-                <div class="flex gap-6 px-3 items-center">
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-sm">Soil100 第4期</div>
-                    <div class="w-56 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">TOKYO Co-cial IMPACT<br>第2期</div>
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-sm">Social X Studio 第1期</div>
-                    <div class="w-56 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">U-25 AI Accelerator<br>第1期</div>
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">OASISアクセラ<br>第3期</div>
-                </div>
-                <!-- ロゴグループ2 (ループ用複製) -->
-                <div class="flex gap-6 px-3 items-center">
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-sm">Soil100 第4期</div>
-                    <div class="w-56 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">TOKYO Co-cial IMPACT<br>第2期</div>
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-sm">Social X Studio 第1期</div>
-                    <div class="w-56 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">U-25 AI Accelerator<br>第1期</div>
-                    <div class="w-48 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-500 shadow-sm text-center text-xs px-2">OASISアクセラ<br>第3期</div>
-                </div>
-            </div>
-            <p class="text-center text-xs text-slate-400 mt-4">※Figmaで各団体の公式ロゴ画像に差し替えてください</p>
-        </div>
-    </section>
-
-    <!-- ⑦ TEAM -->
-    <section id="team" class="py-24 bg-white border-t border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Team</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6">
-                    圧倒的な行動力で一次情報を足で稼ぐ、<br class="hidden sm:block">現場主義のチーム
-                </h2>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
-                <!-- メンバー1 -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition-shadow text-center">
-                    <div class="w-32 h-32 mx-auto bg-slate-100 rounded-full mb-6 overflow-hidden border-4 border-brand-greenLight">
-                        <!-- 写真プレースホルダー -->
-                        <div class="w-full h-full flex items-center justify-center text-slate-400 bg-slate-200">
-                            <i data-lucide="camera" class="w-8 h-8"></i>
-                        </div>
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <i data-lucide="user" style="width:32px;height:32px;"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-1">奥田 朗盛</h3>
-                    <p class="text-brand-green font-bold text-sm mb-4">代表 / 東京大学工学部</p>
-                    <p class="text-slate-600 text-sm leading-relaxed text-left">
-                        JICAつくばでアフリカ研修員に稲作技術を普及する中で、気候変動対策とBS資材の可能性を痛感。「農家さんこそヒーローである」という想いから起業を決意。松尾研等でのAI実装スキルも保有。
-                    </p>
-                </div>
-
-                <!-- メンバー2 -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition-shadow text-center">
-                    <div class="w-32 h-32 mx-auto bg-slate-100 rounded-full mb-6 overflow-hidden border-4 border-brand-greenLight">
-                        <!-- 写真プレースホルダー -->
-                        <div class="w-full h-full flex items-center justify-center text-slate-400 bg-slate-200">
-                            <i data-lucide="camera" class="w-8 h-8"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-1">根本 凌成</h3>
-                    <p class="text-brand-green font-bold text-sm mb-4">事業統括責任者 / 青山学院大学</p>
-                    <p class="text-slate-600 text-sm leading-relaxed text-left">
-                        toB向けAI SaaSサービスの営業・UIUX設計の経験を活かし、Farmilleのプロダクト開発全般とユーザー体験（CX）設計をリード。地方自治体への政策提言経験も持つ。
-                    </p>
-                </div>
-
-                <!-- メンバー3 -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition-shadow text-center">
-                    <div class="w-32 h-32 mx-auto bg-slate-100 rounded-full mb-6 overflow-hidden border-4 border-brand-greenLight">
-                        <!-- 写真プレースホルダー -->
-                        <div class="w-full h-full flex items-center justify-center text-slate-400 bg-slate-200">
-                            <i data-lucide="camera" class="w-8 h-8"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-dark mb-1">桑江 英将</h3>
-                    <p class="text-brand-green font-bold text-sm mb-4">事業開発</p>
-                    <p class="text-slate-600 text-sm leading-relaxed text-left">
-                        東京大学・ミュンヘン工科大学卒業後、リクルート、Accenture等で0→1の事業づくりを数多く牽引。Oi&Tas(株)代表取締役。ビジネスデベロップメントを担当。
-                    </p>
+                    <h3>桑江 英将</h3>
+                    <div class="role">事業開発</div>
+                    <p class="bio">東京大学・ミュンヘン工科大学卒業後、リクルート、Accenture等で0→1の事業づくりを数多く牽引。Oi&Tas(株)代表取締役。ビジネスデベロップメントを担当。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ⑧ FAQ -->
-    <section id="faq" class="py-24 bg-slate-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">FAQ</span>
-                <h2 class="text-3xl font-bold text-brand-dark mb-4">よくあるご質問</h2>
-                <p class="text-slate-600">企業様の法的リスクや公平性に関する懸念を払拭します。</p>
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="faq-header reveal">
+                <span class="section-label">FAQ</span>
+                <h2 class="section-title">よくあるご質問</h2>
             </div>
 
-            <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-brand-dark mb-4 flex items-start gap-3">
-                        <span class="text-brand-green font-black text-xl shrink-0">Q.</span>
-                        農家が効果を謳うことで、農薬取締法等の法規制リスクはありませんか？
-                    </h3>
-                    <div class="flex items-start gap-3 text-slate-600 pl-8">
-                        <p class="leading-relaxed text-sm md:text-base">
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">農家が効果を謳うことで、農薬取締法等の法規制リスクはありませんか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
                             美容・サプリ業界等の標準モデルを採用し、「メーカー提供枠（PR広告）」と「農家の自発的レビュー（個人の感想）」をシステムレベルで完全に分離・管理することで法的リスクを回避しています。
-                        </p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- FAQ 2 -->
-                <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-brand-dark mb-4 flex items-start gap-3">
-                        <span class="text-brand-green font-black text-xl shrink-0">Q.</span>
-                        レビューの公平性（ステマ）はどう担保しますか？
-                    </h3>
-                    <div class="flex items-start gap-3 text-slate-600 pl-8">
-                        <p class="leading-relaxed text-sm md:text-base">
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">レビューの公平性（ステマ）はどう担保しますか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
                             協賛・無償提供があった商材には厳格な「スポンサー表記」を明記します。また、質の高い実証を行う「プラチナランク農家」のレビューのみが評価に強く反映されるアルゴリズムで透明性を確保します。
-                        </p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- FAQ 3 -->
-                <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-brand-dark mb-4 flex items-start gap-3">
-                        <span class="text-brand-green font-black text-xl shrink-0">Q.</span>
-                        資材の「価格比較」機能はありますか？
-                    </h3>
-                    <div class="flex items-start gap-3 text-slate-600 pl-8">
-                        <p class="leading-relaxed text-sm md:text-base">
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">資材の「価格比較」機能はありますか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
                             導入いたしません。農業資材の価格は地域や作物によって大きく変動するため、価格比較は地域間トラブルを招く恐れがあります。Farmilleはあくまで「効果と使用感の客観的検証」に特化します。
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ⑨ CONTACT -->
-    <section id="contact" class="py-24 bg-white relative overflow-hidden">
-        <!-- 背景装飾をグリーンベースに変更 -->
-        <div class="absolute top-0 right-0 w-full h-full bg-brand-greenLight/50 pointer-events-none"></div>
-
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <span class="text-brand-green font-bold tracking-wider uppercase text-sm mb-2 block">Contact</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6">
-                    まずは小規模な「実証実験（PoC）」から<br class="hidden sm:block">始めませんか？
-                </h2>
-                <p class="text-slate-600 leading-relaxed max-w-2xl mx-auto">
-                    メーカー様・商社様向けに、「既存顧客のデータ資産化」や「新規製品の実証（R&D接続）」など、柔軟なプランをご提案いたします。<br>
-                    農家へのヒアリングからレビュー獲得までお任せください。新しい商流開拓の武器となるデータを一緒に作りましょう。
-                </p>
-            </div>
-
-            <!-- 事前レビュー収集フォームの画面イメージを添える（横並び） -->
-            <div class="flex flex-col lg:flex-row gap-12 items-start">
-                
-                <!-- フォームUIイメージ（左側） -->
-                <div class="hidden lg:block w-1/3 pt-8">
-                    <div class="bg-white p-4 rounded-3xl shadow-xl border border-slate-200 transform -rotate-2">
-                        <div class="w-full aspect-[9/16] bg-slate-100 rounded-xl overflow-hidden relative">
-                             <img src="" alt="事前登録フォーム" class="w-full h-full object-cover" onerror="this.outerHTML='<div class=\'flex flex-col items-center justify-center h-full text-slate-400\'><i data-lucide=\'file-text\' class=\'w-10 h-10 mb-2\'></i><span class=\'text-xs font-bold\'>事前レビュー<br>フォーム画像挿入</span></div>'">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 実際のコンタクトフォーム（右側/メイン） -->
-                <div class="w-full lg:w-2/3 bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-slate-100 text-brand-dark">
-                    <form class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">会社名（農園名）<span class="text-brand-green ml-1">*</span></label>
-                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors bg-slate-50 focus:bg-white" placeholder="株式会社〇〇">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">部署名・役職</label>
-                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors bg-slate-50 focus:bg-white" placeholder="営業部 マネージャー">
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">お名前<span class="text-brand-green ml-1">*</span></label>
-                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors bg-slate-50 focus:bg-white" placeholder="山田 太郎">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">メールアドレス<span class="text-brand-green ml-1">*</span></label>
-                                <input type="email" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors bg-slate-50 focus:bg-white" placeholder="yamada@example.com">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">お問い合わせ区分<span class="text-brand-green ml-1">*</span></label>
-                            <select class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors bg-slate-50 focus:bg-white">
-                                <option value="">選択してください</option>
-                                <option value="poc">実証テストのご相談（メーカー・商社様向け）</option>
-                                <option value="farmer">農家先行登録（農家様向け）</option>
-                                <option value="other">その他</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">お問い合わせ内容<span class="text-brand-green ml-1">*</span></label>
-                            <textarea rows="5" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none transition-colors resize-none bg-slate-50 focus:bg-white" placeholder="現在抱えている課題や、ご相談内容をご記入ください。"></textarea>
-                        </div>
-
-                        <div class="text-center pt-6">
-                            <button type="button" class="px-12 py-4 bg-brand-green text-white font-bold rounded-full hover:bg-brand-greenHover transition-all shadow-lg hover:shadow-xl w-full md:w-auto text-lg">
-                                送信する
-                            </button>
-                        </div>
-                    </form>
-                </div>
+    <!-- ===== Contact ===== -->
+    <section class="contact" id="contact">
+        <div class="contact-bg"></div>
+        <div class="container contact-content reveal">
+            <span class="section-label">Contact</span>
+            <h2 class="section-title">
+                テクノロジーで農業資材の課題を解決します。<br>
+                まずは、お気軽にご相談ください。
+            </h2>
+            <p class="section-desc">
+                メーカー様・商社様向けに「既存顧客のデータ資産化」や「新規製品の実証（R&D接続）」など、柔軟なプランをご提案いたします。
+            </p>
+            <div class="contact-actions">
+                <a href="mailto:info@farmille.com" class="btn btn-white">
+                    お問い合わせ・ご相談
+                    <i data-lucide="mail" style="width:16px;height:16px;"></i>
+                </a>
+                <a href="mailto:info@farmille.com" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">
+                    実証・PoC のご相談
+                    <i data-lucide="flask-conical" style="width:16px;height:16px;"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-brand-dark text-slate-400 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-2">
-                    <span class="font-bold text-2xl text-white tracking-tight">Farmille</span>
-                </div>
-                <div class="flex gap-6 text-sm">
-                    <a href="#" class="hover:text-white transition-colors">運営会社</a>
-                    <a href="#" class="hover:text-white transition-colors">プライバシーポリシー</a>
-                    <a href="#" class="hover:text-white transition-colors">利用規約</a>
-                </div>
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="#" class="footer-logo">
+                    <span class="logo-dot" style="width:6px;height:6px;background:var(--green-primary);border-radius:50%;display:inline-block;"></span>
+                    Farmille
+                </a>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Service</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
-            <div class="text-center mt-12 text-sm text-slate-500 border-t border-slate-800 pt-8">
-                &copy; 2026 Farmille All rights reserved.
+            <div class="footer-copyright">
+                &copy; 2026 Farmille. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Initialize Icons -->
+    <!-- ===== Scripts ===== -->
     <script>
+        // Initialize Lucide icons
         lucide.createIcons();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let menuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('active', menuOpen);
+            // Swap icon
+            mobileMenuBtn.innerHTML = menuOpen
+                ? '<i data-lucide="x" style="width:24px;height:24px;"></i>'
+                : '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
+            lucide.createIcons();
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
+                lucide.createIcons();
+            });
+        });
+
+        // FAQ toggle
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            item.classList.toggle('open');
+            // Re-render icons for the toggle
+            lucide.createIcons();
+        }
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
     </script>
+
 </body>
 </html>
