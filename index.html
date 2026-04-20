@@ -386,25 +386,26 @@
             padding: 0;
             position: relative;
             overflow: hidden;
+            min-height: 480px;
         }
 
         .about-grid {
             display: flex;
             align-items: stretch;
+            min-height: inherit;
         }
 
         .about-text {
-            flex: 0 0 50%;
-            max-width: 50%;
+            flex: 0 0 55%;
+            max-width: 55%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 60px 60px 60px max(24px, calc((100vw - 1200px) / 2 + 24px));
+            padding: 60px 60px 60px 0;
         }
 
         .about-image-col {
             flex: 1;
-            margin-right: calc(50% - 50vw);
             overflow: hidden;
         }
 
@@ -1105,17 +1106,17 @@
             .hero-actions .btn { width: 100%; justify-content: center; }
             .hero-scroll-indicator { display: none; }
 
-            .about { padding: 0; }
+            .about { padding: 0; min-height: auto; }
             .services, .problem, .features, .team, .faq { padding: 48px 0; }
 
             .about-grid { flex-direction: column; }
             .about-text {
                 flex: none;
                 max-width: 100%;
-                padding: 48px 24px 32px;
+                padding: 48px 0 32px;
             }
             .about-image-col {
-                margin-right: 0;
+                margin-right: 0 !important;
                 width: 100%;
             }
             .about-image-col img {
@@ -1210,7 +1211,7 @@
 
     <!-- ===== About ===== -->
     <section class="about" id="about">
-        <div class="about-grid">
+        <div class="container about-grid">
             <div class="about-text reveal">
                 <span class="section-label">About Us</span>
                 <h2 style="font-size: clamp(20px, 3.2vw, 38px); font-weight: 800; line-height: 1.5; letter-spacing: -0.02em; margin-bottom: 32px; word-break: keep-all;">
@@ -1222,7 +1223,7 @@
                     私たちは、農業用資材（主にバイオスティミュラント／BS資材）の実証とレビューを通じて一次情報を蓄穏し、農家とメーカーの意思決定を変える東大発スタートアップです。
                 </p>
             </div>
-            <div class="about-image-col reveal">
+            <div class="about-image-col reveal" style="margin-right: calc(50% - 50vw);">
                 <img src="LINE_ALBUM_農家素材_260420_2 2.png" alt="農家の写真">
             </div>
         </div>
