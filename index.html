@@ -713,57 +713,31 @@
             display: block;
         }
 
-        .partners-track-wrapper {
-            position: relative;
-        }
-        .partners-track-wrapper::before,
-        .partners-track-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 120px;
-            z-index: 2;
-        }
-        .partners-track-wrapper::before {
-            left: 0;
-            background: linear-gradient(90deg, var(--dark-bg), transparent);
-        }
-        .partners-track-wrapper::after {
-            right: 0;
-            background: linear-gradient(-90deg, var(--dark-bg), transparent);
-        }
-
-        .partners-track {
+        .partners-grid {
             display: flex;
-            width: max-content;
-            animation: scroll-logos 35s linear infinite;
-        }
-
-        @keyframes scroll-logos {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
         }
 
         .partner-item {
-            flex-shrink: 0;
-            width: 200px;
+            padding: 0 28px;
             height: 72px;
-            margin: 0 16px;
             background: var(--dark-card);
             border: 1px solid var(--dark-border);
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-muted);
             transition: all var(--transition-fast);
+            white-space: nowrap;
         }
         .partner-item:hover {
-            border-color: var(--dark-border-hover);
-            color: var(--text-secondary);
+            border-color: var(--green-primary);
+            color: var(--green-primary);
         }
 
         /* ===== Features Section ===== */
@@ -1380,20 +1354,12 @@
         <div class="container">
             <div class="partners-label">アクセラレーター採択実績・提携先</div>
         </div>
-        <div class="partners-track-wrapper">
-            <div class="partners-track">
+        <div class="partners-grid">
                 <div class="partner-item">Soil100 第4期</div>
                 <div class="partner-item">TOKYO Co-cial IMPACT</div>
                 <div class="partner-item">Social X Studio 第1期</div>
                 <div class="partner-item">U-25 AI Accelerator</div>
                 <div class="partner-item">OASISアクセラ 第3期</div>
-                <!-- Duplicate for seamless loop -->
-                <div class="partner-item">Soil100 第4期</div>
-                <div class="partner-item">TOKYO Co-cial IMPACT</div>
-                <div class="partner-item">Social X Studio 第1期</div>
-                <div class="partner-item">U-25 AI Accelerator</div>
-                <div class="partner-item">OASISアクセラ 第3期</div>
-            </div>
         </div>
     </section>
 
