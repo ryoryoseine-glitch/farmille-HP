@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmille（ファーミル）| 農業資材の実証＆レビュープラットフォーム</title>
+    <meta name="description" content="Farmilleは、全国のイノベーター農家とBS資材メーカーを繋ぐ、実証＆レビュープラットフォームです。気候変動に打ち勝つための確かな情報を、現場のネットワークから生み出します。">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ===== CSS Reset & Variables ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-primary: #2d7a4f;
+            --green-light: #3a9963;
+            --green-dark: #1e5c3a;
+            --green-subtle: #e8f5ee;
+            --green-glow: rgba(45, 122, 79, 0.1);
+
+            --dark-bg: #ffffff;
+            --dark-card: #f8f9fa;
+            --dark-card-hover: #f0f2f5;
+            --dark-border: #e5e7eb;
+            --dark-border-hover: #d1d5db;
+
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --text-on-green: #ffffff;
+
+            --font-en: 'Inter', sans-serif;
+            --font-jp: 'Noto Sans JP', 'Inter', sans-serif;
+
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-jp);
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ===== Utility Classes ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            font-family: var(--font-en);
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-jp);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 14px 32px;
+            border-radius: var(--radius-full);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--green-primary);
+            color: var(--text-on-green);
+        }
+        .btn-primary:hover {
+            background: var(--green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--green-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--dark-border-hover);
+        }
+        .btn-outline:hover {
+            border-color: var(--green-primary);
+            color: var(--green-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-white {
+            background: #111827;
+            color: #ffffff;
+        }
+        .btn-white:hover {
+            background: #1f2937;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        /* ===== Navigation ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 24px;
+            transition: all var(--transition-smooth);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+        }
+        .nav.scrolled {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-en);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            padding: 10px 24px !important;
+            font-size: 13px !important;
+            color: #ffffff !important;
+        }
+
+        .nav-mobile-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 99;
+            padding: 40px 24px;
+        }
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--dark-border);
+            transition: color var(--transition-fast);
+        }
+        .mobile-menu a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 60px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+            animation: float-glow 8s ease-in-out infinite;
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(45, 122, 79, 0.08) 0%, transparent 70%);
+            animation: float-glow 10s ease-in-out infinite reverse;
+        }
+
+        .hero-image-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('LINE_ALBUM_農家素材_260420_1.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35;
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+            z-index: 0;
+        }
+
+        @keyframes float-glow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -20px); }
+        }
+
+        .hero-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-en);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--green-primary);
+        }
+
+        .hero-headline-jp {
+            font-family: var(--font-jp);
+            font-size: clamp(36px, 6vw, 68px);
+            font-weight: 900;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 48px;
+            color: var(--text-primary);
+        }
+        .hero-headline-jp .accent {
+            color: var(--green-primary);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: var(--font-en);
+            letter-spacing: 0.1em;
+            animation: scroll-bounce 2s ease-in-out infinite;
+        }
+        @keyframes scroll-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== About Section ===== */
+        .about {
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-grid {
+            display: flex;
+            align-items: center;
+        }
+
+        .about-text-wrapper {
+            flex: 1 1 auto;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .about-text {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 48px;
+            padding-left: max(24px, calc((100vw - 1200px) / 2 + 24px));
+        }
+
+        .about-text h2 {
+            word-break: keep-all;
+            overflow-wrap: normal;
+        }
+
+        /* 画像エリア: 幅を固定し、画像は縮小して収める（トリミングなし） */
+        .about-image-col {
+            flex: 0 0 540px;
+            width: 540px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 32px 32px 8px;
+        }
+
+        .about-image-col img {
+            display: block;
+            max-width: 100%;
+            max-height: 620px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .about-text .lead {
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        .about-text p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 20px;
+        }
+
+        .about-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--green-light);
+            margin-top: 16px;
+            transition: gap var(--transition-fast);
+        }
+        .about-link:hover {
+            gap: 14px;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-visual-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-primary), var(--green-light));
+        }
+
+        .about-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .about-stat {
+            text-align: center;
+        }
+
+        .about-stat .number {
+            font-family: var(--font-en);
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--green-light);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .about-stat .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .about-highlight {
+            margin-top: 32px;
+            padding: 24px;
+            background: rgba(45, 122, 79, 0.08);
+            border-left: 3px solid var(--green-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .about-highlight p {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Services Section ===== */
+        .services {
+            padding: 48px 0;
+            position: relative;
+        }
+
+        .services-header {
+            margin-bottom: 48px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            border-color: var(--dark-border-hover);
+            background: var(--dark-card-hover);
+            transform: translateY(-4px);
+        }
+
+        .service-card-label {
+            font-family: var(--font-en);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green-primary);
+            margin-bottom: 24px;
+        }
+
+        .service-card-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(45, 122, 79, 0.1);
+            border: 1px solid rgba(45, 122, 79, 0.2);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--green-light);
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .service-card .subtitle {
+            font-size: 13px;
+            color: var(--green-light);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .service-card-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition-fast);
+        }
+        .service-card:hover .service-card-link {
+            color: var(--green-light);
+            gap: 10px;
+        }
+
+        /* ===== Problem Section ===== */
+        .problem {
+            padding: 48px 0;
+            position: relative;
+        }
+
+        .problem-header {
+            margin-bottom: 48px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .problem-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            transition: all var(--transition-smooth);
+        }
+        .problem-card:hover {
+            border-color: var(--dark-border-hover);
+        }
+
+        .problem-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .problem-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .problem-card:first-child .problem-card-icon {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+        .problem-card:last-child .problem-card-icon {
+            background: rgba(45, 122, 79, 0.1);
+            color: var(--green-light);
+        }
+
+        .problem-card-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .problem-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .problem-item {
+            display: flex;
+            gap: 16px;
+        }
+
+        .problem-item-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: #ef4444;
+        }
+
+        .problem-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .problem-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Reviews Section ===== */
+        .reviews-section {
+            padding: 80px 0;
+            background: var(--dark-card);
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .review-card {
+            background: #fff;
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: all var(--transition-smooth);
+        }
+        .review-card:hover {
+            border-color: rgba(45, 122, 79, 0.3);
+            box-shadow: 0 8px 32px rgba(45, 122, 79, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .review-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--green-subtle);
+            border: 1px solid rgba(45, 122, 79, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-primary);
+            flex-shrink: 0;
+        }
+
+        .review-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .review-farmer {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .review-material {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--green-primary);
+            background: var(--green-subtle);
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            display: inline-block;
+        }
+
+        .review-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            flex: 1;
+        }
+
+        .review-stars {
+            font-size: 18px;
+            color: #f59e0b;
+            letter-spacing: 2px;
+        }
+
+        /* ===== Partner Logos ===== */
+
+        .partners {
+            padding: 48px 0;
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .partners-label {
+            font-family: var(--font-jp);
+            font-size: clamp(16px, 2.5vw, 22px);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: var(--green-primary);
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .partners-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .partner-item {
+            padding: 0 28px;
+            height: 72px;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+        .partner-item:hover {
+            border-color: var(--green-primary);
+            color: var(--green-primary);
+        }
+
+        /* ===== Features Section ===== */
+        .features {
+            padding: 48px 0;
+            position: relative;
+        }
+
+        .features-header {
+            margin-bottom: 48px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            border-color: var(--dark-border-hover);
+            transform: translateY(-4px);
+        }
+
+        .feature-card-num {
+            font-family: var(--font-en);
+            font-size: 72px;
+            font-weight: 900;
+            color: rgba(0,0,0,0.04);
+            position: absolute;
+            top: -8px;
+            right: 16px;
+            line-height: 1;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== Team Section ===== */
+        .team {
+            padding: 48px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .team-header {
+            margin-bottom: 48px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .team-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            text-align: center;
+            transition: all var(--transition-smooth);
+        }
+        .team-card:hover {
+            border-color: var(--dark-border-hover);
+            transform: translateY(-4px);
+        }
+
+        .team-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 2px solid var(--dark-border);
+            overflow: hidden;
+        }
+
+        .team-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .team-card .role {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-light);
+            margin-bottom: 16px;
+        }
+
+        .team-card .bio {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        /* ===== FAQ Section ===== */
+        .faq {
+            padding: 48px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .faq-header {
+            margin-bottom: 48px;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: border-color var(--transition-fast);
+        }
+        .faq-item:hover {
+            border-color: var(--dark-border-hover);
+        }
+
+        .faq-question {
+            padding: 24px 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            user-select: none;
+        }
+
+        .faq-q-mark {
+            font-family: var(--font-en);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--green-primary);
+            flex-shrink: 0;
+            line-height: 1.6;
+        }
+
+        .faq-q-text {
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .faq-toggle {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            transition: transform var(--transition-fast);
+            margin-top: 4px;
+        }
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-smooth);
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 28px 24px;
+            padding-left: 62px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        /* ===== Contact Section ===== */
+        .contact {
+            padding: 48px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-primary) 50%, #1a6b40 100%);
+        }
+        .contact-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .contact .section-label {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .contact .section-title {
+            color: #ffffff;
+        }
+
+        .contact .section-desc {
+            color: rgba(255,255,255,0.8);
+            margin: 0 auto 48px;
+        }
+
+        .contact-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-en);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: color var(--transition-fast);
+        }
+        .footer-links a:hover {
+            color: var(--text-secondary);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--dark-border);
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-en);
+        }
+
+        /* ===== Animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .nav-mobile-btn { display: block; }
+            .about-grid { grid-template-columns: 1fr; gap: 48px; }
+            .about-image { display: none; }
+            .services-grid { grid-template-columns: 1fr; }
+            .problem-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .mockup-grid { grid-template-columns: 1fr !important; }
+            .section-title { white-space: normal !important; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 24px; }
+
+            .hero { min-height: auto; padding: 100px 0 60px; }
+            .hero-headline-jp { white-space: normal !important; font-size: 28px; }
+            .hero-headline-jp span { white-space: normal; display: inline !important; }
+            .hero-headline-jp span::after { content: '\A'; white-space: pre; }
+            .hero-actions { flex-direction: column; }
+            .hero-actions .btn { width: 100%; justify-content: center; }
+            .hero-scroll-indicator { display: none; }
+
+            .about { padding: 0; min-height: auto; }
+            .services, .problem, .features, .team, .faq { padding: 48px 0; }
+
+            .about-grid { flex-direction: column; }
+            .about-text-wrapper {
+                flex: none;
+                max-width: 100%;
+                width: 100%;
+            }
+            .about-text {
+                padding: 48px 24px 32px;
+            }
+            .about-image-col {
+                flex: none;
+                width: 100%;
+                padding: 0 24px 40px;
+                justify-content: center;
+            }
+            .about-image-col img {
+                max-width: 100%;
+                max-height: 360px;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+            }
+
+            .about-stat .number { font-size: 36px; }
+
+            .reviews-grid { grid-template-columns: 1fr; }
+
+            .team-grid { grid-template-columns: 1fr; }
+
+            .contact { padding: 48px 0; }
+            .contact-actions { flex-direction: column; align-items: center; }
+
+            .footer-inner { flex-direction: column; gap: 24px; }
+            .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .problem-grid { grid-template-columns: 1fr 1fr; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ===== Launch Horizontal Bar ===== */
+        #launch-banner {
+            position: fixed;
+            top: 72px;
+            right: 0;
+            z-index: 150;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            height: 66px;
+            padding: 0 36px;
+            background: linear-gradient(90deg, var(--green-dark) 0%, var(--green-primary) 100%);
+            border-radius: 0 0 0 22px;
+            box-shadow: 0 6px 28px rgba(45,122,79,0.30), 0 2px 12px rgba(0,0,0,0.10);
+            overflow: hidden;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform var(--transition-spring), opacity 0.3s ease, filter 0.2s ease;
+            animation: bar-slide-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        #launch-banner:hover {
+            filter: brightness(1.1);
+        }
+        @keyframes bar-slide-in {
+            from { transform: translateX(110%); opacity: 0; }
+            to   { transform: translateX(0);    opacity: 1; }
+        }
+        #launch-banner.hidden {
+            transform: translateX(110%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 点滅ドット */
+        .lbt-dot {
+            width: 9px;
+            height: 9px;
+            background: #6ee7a0;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulse-dot 1.8s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50%      { transform: scale(1.6); opacity: 0.6; }
+        }
+
+        /* テキスト */
+        .lbt-text {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.03em;
+        }
+
+        /* 矢印アイコン */
+        .lbt-arrow {
+            color: rgba(255,255,255,0.85);
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* モバイル：少し小さく */
+        @media (max-width: 768px) {
+            #launch-banner {
+                height: 50px;
+                padding: 0 20px;
+                gap: 10px;
+                border-radius: 0 0 0 16px;
+            }
+            .lbt-text { font-size: 13px; }
+            .lbt-dot  { width: 7px; height: 7px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ===== Navigation ===== -->
+    <nav class="nav" id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <img src="logo.png" alt="Farmille" style="height: 70px; width: auto; object-fit: contain;">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Service</a></li>
+                <li style="display:none;"><a href="#features">Features</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="btn btn-primary nav-cta">お問い合わせ</a></li>
+            </ul>
+            <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="メニュー">
+                <i data-lucide="menu" style="width:24px;height:24px;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#services" class="mobile-link">Service</a>
+        <a href="#features" class="mobile-link" style="display:none;">Features</a>
+        <a href="#team" class="mobile-link">Team</a>
+        <a href="#faq" class="mobile-link">FAQ</a>
+        <a href="#contact" class="mobile-link">お問い合わせ</a>
+    </div>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-image-bg"></div>
+            <div class="hero-grid-lines"></div>
+        </div>
+        <div class="container hero-content">
+            <div style="margin-bottom: 32px;">
+                <img src="logo.png" alt="Farmille" style="height: 160px; width: auto; object-fit: contain;">
+            </div>
+            <div class="hero-eyebrow">Review & Proof-of-Concept Platform for Agriculture</div>
+            <h1 class="hero-headline-jp" style="white-space: nowrap;">
+                <span style="display:block;">農家の一次情報を集約する。</span>
+                <span style="display:block;">全国のイノベーター農家と</span>
+                <span style="display:block;">BS資材メーカーを繋ぐ、</span>
+                <span style="display:block;">実証＆レビュープラットフォーム。</span>
+            </h1>
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-primary">
+                    サービスを見る
+                    <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    お問い合わせ
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            SCROLL
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+        </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section class="about" id="about">
+        <div class="about-grid">
+            <div class="about-text-wrapper reveal">
+                <div class="about-text">
+                    <span class="section-label">About Us</span>
+                    <h2 style="font-size: clamp(22px, 3vw, 44px); font-weight: 800; line-height: 1.4; letter-spacing: -0.02em; margin-bottom: 32px;">
+                        <span style="display:block;">農業の情報の非対称性を解消し、</span>
+                        <span style="display:block;">共に気候変動に適応する農業へ。</span>
+                        <span style="display:block;">農家の自己実現を支える。</span>
+                    </h2>
+                    <p style="font-size: 15px; color: var(--text-secondary); line-height: 2; max-width: 480px;">
+                        私たちは、農業用資材（主にバイオスティミュラント／BS資材）の実証とレビューを通じて一次情報を蓄積し、農家とメーカーの意思決定を変える東大発スタートアップです。
+                    </p>
+                </div>
+            </div>
+            <div class="about-image-col reveal">
+                <img src="LINE_ALBUM_農家素材_260420_2 2.png" alt="農家の写真">
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Services ===== -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header reveal">
+                <span class="section-label">Service</span>
+                <h2 class="section-title" style="white-space: nowrap;">
+                    <span style="display:block;">Farmilleは、農業資材（BS資材）について、</span>
+                    <span style="display:block;">農家コミュニティがレビューを行うプラットフォームです。</span>
+                </h2>
+                <p class="section-desc" style="max-width: none; white-space: normal;">
+                    <span style="display:block; margin-bottom: 4px;">デジタルの力で農業資材の実証・評価・流通を革新します。</span>
+                    メーカー様に「最適な実証テスト環境」・「評価に基づいたマーケティング」を提供し、その結果を農家に還元する新しいエコシステムです。
+                </p>
+            </div>
+
+            <!-- ===== Screen Mockups ===== -->
+            <!-- Demo CTA Button -->
+            <div style="text-align: center; margin: 48px 0 32px;">
+                <a href="https://farmille-mvp.vercel.app/" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 16px; padding: 16px 40px; display: inline-flex;">
+                    デモ版を見る
+                    <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+                </a>
+            </div>
+
+            <div class="mockup-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 0 0 64px;">
+
+                <!-- Mockup 左 (2枚目=ホーム画面) -->
+                <div style="background: #f0f2f5; border-radius: 16px; padding: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.08);">
+                    <div style="background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);">
+                        <div style="background: #f5f5f5; border-bottom: 1px solid #e5e7eb; padding: 10px 16px; display: flex; align-items: center; gap: 6px;">
+                            <span style="width:12px;height:12px;background:#ff5f57;border-radius:50%;display:inline-block;"></span>
+                            <span style="width:12px;height:12px;background:#ffbd2e;border-radius:50%;display:inline-block;"></span>
+                            <span style="width:12px;height:12px;background:#28c840;border-radius:50%;display:inline-block;"></span>
+                        </div>
+                        <div style="aspect-ratio: 16/10; overflow: hidden;">
+                            <img src="screen2.png" alt="Farmille ホーム画面" style="width:100%; height:100%; object-fit:cover; object-position:top;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mockup 右 (1枚目=レビュー画面) -->
+                <div style="background: #f0f2f5; border-radius: 16px; padding: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.08);">
+                    <div style="background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);">
+                        <div style="background: #f5f5f5; border-bottom: 1px solid #e5e7eb; padding: 10px 16px; display: flex; align-items: center; gap: 6px;">
+                            <span style="width:12px;height:12px;background:#ff5f57;border-radius:50%;display:inline-block;"></span>
+                            <span style="width:12px;height:12px;background:#ffbd2e;border-radius:50%;display:inline-block;"></span>
+                            <span style="width:12px;height:12px;background:#28c840;border-radius:50%;display:inline-block;"></span>
+                        </div>
+                        <div style="aspect-ratio: 16/10; overflow: hidden;">
+                            <img src="screen1.png" alt="Farmille レビュー画面" style="width:100%; height:100%; object-fit:cover; object-position:top;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card reveal">
+                    <h3>実証＆レビュープラットフォーム</h3>
+                    <div class="subtitle">農家の生の声を資産化する中核サービス</div>
+                    <p>
+                        全国のイノベーター農家による定性・定量的な評価データをプラットフォーム上に蓄積。そのデータが客観的根拠となり、マジョリティ農家やJA、商社への説得材料として機能します。
+                    </p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card reveal">
+                    <h3>リサーチ＆PoC支援</h3>
+                    <div class="subtitle">ターゲット農家への実証テストマーケティング</div>
+                    <p>
+                        自力では開拓不可能な全国のイノベーター農家へ瞬時にアクセス。ゼロからの営業コストを劇的に削減し、最速のテストマーケティングを実現します。
+                    </p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card reveal">
+                    <h3>農家コミュニティ</h3>
+                    <div class="subtitle">スレッド型情報交換プラットフォーム</div>
+                    <p>
+                        単一のレビューに対し、農家同士が深掘り・情報共有できる交流機能。他地域のトップ農家とオンラインで繋がる決定的なプラットフォームを提供します。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Problem ===== -->
+    <section class="problem" id="problem">
+        <div class="container">
+            <div class="problem-header reveal">
+                <span class="section-label">Problem</span>
+                <h2 class="section-title">BS資材の普及を阻む、情報の分断と実証の壁</h2>
+                <p class="section-desc" style="margin-top: 16px; max-width: 880px; line-height: 2;">
+                    <span style="display:block; margin-bottom: 8px;">猛暑や干ばつなど、気候変動による予期せぬ環境ストレスが多発する現在、「農業版サプリメント」とも言えるBS資材（バイオスティミュラント）の活用が急務となっています。</span>
+                    <span style="display:block; margin-bottom: 8px;">しかし、現場では「本当に効くのか」という生きた情報が不足し、業界全体で実証データが分断されています。</span>
+                    <span style="display:block;">既存のサプライチェーンの中で、双方が深刻なペインを抱えています。</span>
+                </p>
+            </div>
+
+            <div class="problem-grid">
+                <!-- Manufacturer Pain -->
+                <div class="problem-card reveal">
+                    <div class="problem-card-header" style="margin-bottom: 24px; padding-bottom: 16px;">
+                        <h3>資材メーカー・商社様</h3>
+                    </div>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <div>
+                                <h4>実証環境の欠如と営業コスト</h4>
+                                <p>自社実証だけでは現場感が伝わらず、全国の有力農家にテストしてもらうための個別営業コストが莫大。</p>
+                            </div>
+                        </li>
+                        <li class="problem-item">
+                            <div>
+                                <h4>客観的エビデンスの不足</h4>
+                                <p>「実際に農家が使って高評価だった」という定性・定量データがなく、新規取引先の開拓が困難。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Farmer Pain -->
+                <div class="problem-card reveal">
+                    <div class="problem-card-header" style="margin-bottom: 24px; padding-bottom: 16px;">
+                        <h3>農家様</h3>
+                    </div>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <div>
+                                <h4>情報不足によるブラックボックス化</h4>
+                                <p>新しい資材を試したいが、公式スペックだけでは不安。混用時の失敗データがどこにもない。</p>
+                            </div>
+                        </li>
+                        <li class="problem-item">
+                            <div>
+                                <h4>成功ノウハウの孤立</h4>
+                                <p>他地域のトップ農家とオンラインで情報交換できる、決定的なコミュニティが存在しない。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Reviews ===== -->
+    <section class="reviews-section" id="reviews">
+        <div class="container">
+            <div class="reveal" style="margin-bottom: 40px;">
+                <span class="section-label" style="font-size: 13px; letter-spacing: 0.15em;">Reviews</span>
+                <h2 style="font-size: clamp(22px, 3vw, 36px); font-weight: 800; line-height: 1.4; margin-bottom: 0;">すでにいただいているレビュー</h2>
+            </div>
+            <div class="reviews-grid">
+
+                <!-- Review 1 -->
+                <div class="review-card reveal">
+                    <div class="review-header">
+                        <div class="review-avatar">
+                            <i data-lucide="user" style="width:28px;height:28px;"></i>
+                        </div>
+                        <div class="review-meta">
+                            <div class="review-farmer">滋賀県大津市 いちご農家</div>
+                            <div class="review-material">対象資材：ボンバルディア</div>
+                        </div>
+                    </div>
+                    <p class="review-body">
+                        例年よりも草勢が旺盛になり、2番果の花数が多くなった印象があります。一方で、窒素成分が含まれているため使用量や使用時期によっては花芽分化が遅れる可能性があることから使用時期と量には注意が必要だと感じました。この資材のみによる効果かどうかは判然としないですが、草勢の強さや花数の増加を見る限り継続して使う価値はあると思います。
+                    </p>
+                    <div class="review-stars">
+                        <span>★★★★☆</span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card reveal">
+                    <div class="review-header">
+                        <div class="review-avatar">
+                            <i data-lucide="user" style="width:28px;height:28px;"></i>
+                        </div>
+                        <div class="review-meta">
+                            <div class="review-farmer">千葉県常総市 米農家</div>
+                            <div class="review-material">対象資材：コメとれーる</div>
+                        </div>
+                    </div>
+                    <p class="review-body">
+                        使用したところ収量が大きく伸び、翌年も良好だった一方で、その次の年に収量が落ちた。その原因として、養分の吸収効率が上がったことで土壌側の養分が不足しやすくなった可能性があると考え、堆肥を増やす対応をしたところ改善した。その後は毎年継続して使用している。
+                    </p>
+                    <div class="review-stars">
+                        <span>★★★★★</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Partners ===== -->
+
+    <section class="partners">
+        <div class="container">
+            <div class="partners-label">アクセラレーター採択実績・提携先</div>
+        </div>
+        <div class="partners-grid">
+                <div class="partner-item">Soil100 第4期</div>
+                <div class="partner-item">TOKYO Co-cial IMPACT</div>
+                <div class="partner-item">Social X Studio 第1期</div>
+                <div class="partner-item">U-25 AI Accelerator</div>
+                <div class="partner-item">OASISアクセラ 第3期</div>
+        </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="features" id="features" style="display:none;">
+        <div class="container">
+            <div class="features-header reveal">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">圧倒的な「ネットワーク」と、現場に寄り添うプロダクト</h2>
+                <p class="section-desc">Farmilleが持つ独自の強みと機能をご紹介します。</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">01</div>
+                    <div class="feature-icon">
+                        <i data-lucide="trending-down" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>圧倒的な営業コスト削減</h3>
+                    <p>自力では開拓不可能な全国のイノベーター農家へ瞬時にアクセス。最速のテストマーケティングを実現します。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">02</div>
+                    <div class="feature-icon">
+                        <i data-lucide="database" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>現場のリアルな一次データ</h3>
+                    <p>「実際の圃場での使用感」や「複数混用時の薬害データ」を独占的に収集。強力なエビデンスになります。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">03</div>
+                    <div class="feature-icon">
+                        <i data-lucide="award" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>掲載によるブランド化</h3>
+                    <p>有力農家からの高評価は、それ自体が競争優位性に。新たな流通網の開拓を後押しします。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">04</div>
+                    <div class="feature-icon">
+                        <i data-lucide="smartphone" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>極限までシンプルなUI</h3>
+                    <p>多忙な現場の負担にならないよう、入力ハードルを極限まで下げた直感的なインターフェースを提供。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">05</div>
+                    <div class="feature-icon">
+                        <i data-lucide="scale" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>完全な中立性</h3>
+                    <p>既存の特定商流に属さないため、忖度のないフラットな評価基盤を提供。信頼性の根幹を担保します。</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-card-num">06</div>
+                    <div class="feature-icon">
+                        <i data-lucide="message-square" style="width:22px;height:22px;"></i>
+                    </div>
+                    <h3>スレッド型コミュニティ</h3>
+                    <p>「この時間帯に散布した？」「うちの土壌では？」を農家同士が深掘り・共有できる場を提供します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Team ===== -->
+    <section class="team" id="team">
+        <div class="container">
+            <div class="team-header reveal" style="margin-bottom: 40px;">
+                <span class="section-label" style="margin-bottom: 0;">Team</span>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <img src="image.png" alt="奥田 朗盛" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <h3>奥田 朗盛</h3>
+                    <div class="role">代表 / 東京大学工学部</div>
+                    <p class="bio">JICAつくばでアフリカ研修員に稲作技術を普及する中で、気候変動対策とBS資材の可能性を痛感。「農家さんこそヒーローである」という想いから起業を決意。松尾研等でのAI実装スキルも保有。</p>
+                </div>
+
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <img src="image copy.png" alt="根本 凌成" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <h3>根本 凌成</h3>
+                    <div class="role">CPO / 青山学院大学</div>
+                    <p class="bio">toB向けAI SaaSサービスの営業・UIUX設計の経験を活かし、Farmilleのプロダクト開発全般とユーザー体験（CX）設計をリード。地方自治体への政策提言経験も持つ。</p>
+                </div>
+
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <img src="image copy 2.png" alt="桑江 英将" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <h3>桑江 英将</h3>
+                    <div class="role">CBDO</div>
+                    <p class="bio">東京大学・ミュンヘン工科大学卒業後、リクルート、Accenture等で0→1の事業づくりを数多く牽引。Oi&Tas(株)代表取締役。ビジネスデベロップメントを担当。</p>
+                </div>
+
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <img src="image copy 3.png" alt="酒井 涼雅" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <h3>酒井 涼雅</h3>
+                    <div class="role">CTO</div>
+                    <p class="bio"></p>
+                </div>
+
+                <div class="team-card reveal">
+                    <div class="team-avatar">
+                        <img src="image copy 4.png" alt="島村 颯生" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <h3>島村 颯生</h3>
+                    <div class="role">事業開発主任</div>
+                    <p class="bio"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="faq-header reveal">
+                <span class="section-label">FAQ</span>
+                <h2 class="section-title">よくあるご質問</h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">農家が効果を謳うことで、農薬取締法等の法規制リスクはありませんか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            美容・サプリ業界等の標準モデルを採用し、「メーカー提供枠（PR広告）」と「農家の自発的レビュー（個人の感想）」をシステムレベルで完全に分離・管理することで法的リスクを回避しています。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">レビューの公平性（ステマ）はどう担保しますか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            協賛・無償提供があった商材には厳格な「スポンサー表記」を明記します。また、質の高い実証を行う「プラチナランク農家」のレビューのみが評価に強く反映されるアルゴリズムで透明性を確保します。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-mark">Q.</span>
+                        <span class="faq-q-text">資材の「価格比較」機能はありますか？</span>
+                        <i data-lucide="plus" class="faq-toggle" style="width:20px;height:20px;"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            導入いたしません。農業資材の価格は地域や作物によって大きく変動するため、価格比較は地域間トラブルを招く恐れがあります。Farmilleはあくまで「効果と使用感の客観的検証」に特化します。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section class="contact" id="contact">
+        <div class="contact-bg"></div>
+        <div class="container contact-content reveal">
+            <span class="section-label">Contact</span>
+            <h2 class="section-title">
+                テクノロジーで農業資材の課題を解決します。<br>
+                まずは、お気軽にご相談ください。
+            </h2>
+            <p class="section-desc">
+                メーカー様・商社様向けに「既存顧客のデータ資産化」や「新規製品の実証（R&D接続）」など、柔軟なプランをご提案いたします。
+            </p>
+            <div class="contact-actions">
+                <a href="mailto:rowsey.okuda@farmille.com" class="btn btn-white">
+                    お問い合わせ・ご相談
+                    <i data-lucide="mail" style="width:16px;height:16px;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="#" class="footer-logo">
+                    <img src="logo.png" alt="Farmille" style="height: 32px; width: auto; object-fit: contain;">
+                </a>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Service</a></li>
+                    <li style="display:none;"><a href="#features">Features</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 Farmille. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== Scripts ===== -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let menuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('active', menuOpen);
+            // Swap icon
+            mobileMenuBtn.innerHTML = menuOpen
+                ? '<i data-lucide="x" style="width:24px;height:24px;"></i>'
+                : '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
+            lucide.createIcons();
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
+                lucide.createIcons();
+            });
+        });
+
+        // FAQ toggle
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            item.classList.toggle('open');
+            // Re-render icons for the toggle
+            lucide.createIcons();
+        }
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+
+    <!-- ===== Launch Horizontal Bar ===== -->
+    <a id="launch-banner" href="https://farmille-review-sheets-deploy.vercel.app/entry?t=farmille-91laq1-v20kyi" target="_blank" rel="noopener noreferrer"
+       aria-label="事前登録ページへ移動する">
+        <span class="lbt-dot"></span>
+        <span class="lbt-text">事前登録＆レビュー募集中</span>
+        <span class="lbt-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+        </span>
+    </a>
+
+
+</body>
+</html>
