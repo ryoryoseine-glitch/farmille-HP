@@ -921,6 +921,48 @@
             gap: 32px;
         }
 
+        /* CEOカードは上段に大きく表示 */
+        .team-card-featured {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: 48px 56px;
+            text-align: left;
+            transition: all var(--transition-smooth);
+        }
+        .team-card-featured:hover {
+            border-color: var(--dark-border-hover);
+            transform: translateY(-4px);
+        }
+        .team-card-featured .team-avatar {
+            width: 180px;
+            height: 180px;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .team-card-featured .team-info {
+            flex: 1;
+        }
+        .team-card-featured h3 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .team-card-featured .role {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .team-card-featured .bio {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            max-width: 640px;
+        }
+
         .team-card {
             background: var(--dark-card);
             border: 1px solid var(--dark-border);
@@ -1165,6 +1207,9 @@
             .problem-grid { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
             .team-grid { grid-template-columns: 1fr; }
+            .team-card-featured { flex-direction: column; text-align: center; padding: 36px 24px; gap: 24px; }
+            .team-card-featured .team-avatar { margin: 0 auto; }
+            .team-card-featured .bio { max-width: 100%; }
             .mockup-grid { grid-template-columns: 1fr !important; }
             .section-title { white-space: normal !important; }
         }
@@ -1678,13 +1723,15 @@
             </div>
 
             <div class="team-grid">
-                <div class="team-card reveal">
+                <div class="team-card-featured reveal">
                     <div class="team-avatar">
-                        <img src="image.png" alt="奥田 朗盛" style="width:100%;height:100%;object-fit:cover;">
+                        <img src="スクリーンショット 2026-05-01 12.14.13.png" alt="奥田 朗盛" style="width:100%;height:100%;object-fit:cover;">
                     </div>
-                    <h3>奥田 朗盛</h3>
-                    <div class="role">代表 / 東京大学工学部</div>
-                    <p class="bio">JICAつくばでアフリカ研修員に稲作技術を普及する中で、気候変動対策とBS資材の可能性を痛感。「農家さんこそヒーローである」という想いから起業を決意。松尾研等でのAI実装スキルも保有。</p>
+                    <div class="team-info">
+                        <h3>奥田 朗盛</h3>
+                        <div class="role">CEO / 東京大学工学部</div>
+                        <p class="bio">幼少期のマダガスカル在住経験から食に関心を持つ。中村哲氏に影響を受け、農業・環境分野を志す。東京大学入学後、JICAつくばでの稲作技術普及、NPO法人での農業スタートアップリサーチ業務に携わる。気候変動による農業の危機を目の当たりにし、「農家さんこそヒーローである」という想いから起業を決意。松尾研等でのAI実装スキルも保有。</p>
+                    </div>
                 </div>
 
                 <div class="team-card reveal">
@@ -1702,7 +1749,7 @@
                     </div>
                     <h3>桑江 英将</h3>
                     <div class="role">CBDO</div>
-                    <p class="bio">東京大学・ミュンヘン工科大学卒業後、リクルート、Accenture等で0→1の事業づくりを数多く牽引。Oi&Tas(株)代表取締役。ビジネスデベロップメントを担当。</p>
+                    <p class="bio"><strong>Oi&amp;Tas(株) 代表取締役</strong><br><strong>Minkalife(株) 取締役</strong><br>東京大学・ミュンヘン工科大学卒業後、リクルート、Accenture等で0→1の事業づくりを数多く牽引。</p>
                 </div>
 
                 <div class="team-card reveal">
@@ -1710,18 +1757,11 @@
                         <img src="image copy 3.png" alt="酒井 涼雅" style="width:100%;height:100%;object-fit:cover;">
                     </div>
                     <h3>酒井 涼雅</h3>
-                    <div class="role">CTO</div>
+                    <div class="role">CTO / 関西学院大学</div>
                     <p class="bio">日本最大のアプリ開発コンテスト アプリ甲子園2024 ファイナリスト＆企業賞（マイナビ賞）／ 高校生アプリアイデアコンテスト 優秀賞／ 神戸市発シリコンバレー起業家育成プログラム 2期生／ 令和6年度「電波の日・情報通信月間」受賞／ 福田記念財団 奨学生／ 東京大学寄附講座GCI 修了生</p>
                 </div>
 
-                <div class="team-card reveal">
-                    <div class="team-avatar">
-                        <img src="image copy 4.png" alt="島村 颯生" style="width:100%;height:100%;object-fit:cover;">
-                    </div>
-                    <h3>島村 颯生</h3>
-                    <div class="role">事業開発主任</div>
-                    <p class="bio"></p>
-                </div>
+
             </div>
         </div>
     </section>
